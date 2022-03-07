@@ -22,10 +22,16 @@ public:
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 3; j++) {
                 for (int k = 0; k < 3; k++) {
-                    cubeFace[i][j][k] =rand()%6;
+                    cubeFace[i][j][k] =j;
                 }
             }
         }
+        rotation_clockwise(2);
+        rotation_clockwise(2);
+        rotation_clockwise(2);
+        rotation_clockwise(2);
+        rotation_counterclockwise(2);
+
     }
     void setCubeFace(int cubeFace[6][3][3]) {//設定整個魔術方塊每一面的顏色
         for (int i = 0; i < 6; i++) {
@@ -46,6 +52,45 @@ public:
                 cout << endl;
             }
             cout << "-------------" << endl;
+        }
+    }
+    void swap(int&a,int&b) {
+        int temp = a;
+        a = b;
+        b = temp;
+    }
+    void rotation_clockwise(int faceNum) {//順時針旋轉
+        switch (faceNum) {//faceNum為第幾面
+
+        case 2:
+            swap(cubeFace[1][0][2], cubeFace[0][2][2]);
+            swap(cubeFace[1][1][2], cubeFace[0][2][1]);
+            swap(cubeFace[1][2][2], cubeFace[0][2][0]);
+
+            swap(cubeFace[1][0][2], cubeFace[3][2][0]);
+            swap(cubeFace[1][1][2], cubeFace[3][1][0]);
+            swap(cubeFace[1][2][2], cubeFace[3][0][0]);
+
+            swap(cubeFace[1][0][2], cubeFace[5][0][0]);
+            swap(cubeFace[1][1][2], cubeFace[5][0][1]);
+            swap(cubeFace[1][2][2], cubeFace[5][0][2]);
+        }
+    }
+    void rotation_counterclockwise(int faceNum) {//逆時針旋轉
+        switch (faceNum) {//faceNum為第幾面
+
+        case 2:
+            swap(cubeFace[1][0][2], cubeFace[5][0][0]);
+            swap(cubeFace[1][1][2], cubeFace[5][0][1]);
+            swap(cubeFace[1][2][2], cubeFace[5][0][2]);
+
+            swap(cubeFace[1][0][2], cubeFace[3][2][0]);
+            swap(cubeFace[1][1][2], cubeFace[3][1][0]);
+            swap(cubeFace[1][2][2], cubeFace[3][0][0]);
+
+            swap(cubeFace[1][0][2], cubeFace[0][2][2]);
+            swap(cubeFace[1][1][2], cubeFace[0][2][1]);
+            swap(cubeFace[1][2][2], cubeFace[0][2][0]);           
         }
     }
 
@@ -101,7 +146,6 @@ void show(cube c) {
                     }
                     fillrectangle(k * 30+90,  j * 30, k * 30 + 120,  j * 30 + 30);
                 }
-                
             }
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 3; j++) {
@@ -165,9 +209,6 @@ void show(cube c) {
                 }
                 cout << endl;
             }
-
-          
-        
     }
 }
 void test() {
