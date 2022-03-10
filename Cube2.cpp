@@ -22,15 +22,11 @@ public:
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 3; j++) {
                 for (int k = 0; k < 3; k++) {
-                    cubeFace[i][j][k] =i;
+                    cubeFace[i][j][k] = i;
                 }
             }
         }
-        rotation_clockwise(2);
-        rotation_clockwise(2);
-        rotation_clockwise(2);
-        rotation_clockwise(2);
-        rotation_counterclockwise(2);
+        rotation_clockwise(3);
 
     }
     void setCubeFace(int cubeFace[6][3][3]) {//設定整個魔術方塊每一面的顏色
@@ -54,7 +50,7 @@ public:
             cout << "-------------" << endl;
         }
     }
-    void swap(int&a,int&b) {
+    void swap(int& a, int& b) {
         int temp = a;
         a = b;
         b = temp;
@@ -62,38 +58,163 @@ public:
     void rotation_clockwise(int faceNum) {//順時針旋轉
         switch (faceNum) {//faceNum為第幾面
 
+        case 0:
+            swap(cubeFace[1][0][0], cubeFace[2][0][0]);
+            swap(cubeFace[1][0][1], cubeFace[2][0][1]);
+            swap(cubeFace[1][0][2], cubeFace[2][0][2]);
+                             
+            swap(cubeFace[1][0][0], cubeFace[3][0][0]);
+            swap(cubeFace[1][0][1], cubeFace[3][0][1]);
+            swap(cubeFace[1][0][2], cubeFace[3][0][2]);
+                             
+            swap(cubeFace[1][0][0], cubeFace[4][0][0]);
+            swap(cubeFace[1][0][1], cubeFace[4][0][1]);
+            swap(cubeFace[1][0][2], cubeFace[4][0][2]);
+            break;
+        case 1:
+            swap(cubeFace[4][0][2], cubeFace[5][2][0]);
+            swap(cubeFace[4][1][2], cubeFace[5][1][0]);
+            swap(cubeFace[4][2][2], cubeFace[5][0][0]);
+                          
+            swap(cubeFace[4][0][2], cubeFace[2][2][0]);
+            swap(cubeFace[4][1][2], cubeFace[2][1][0]);
+            swap(cubeFace[4][2][2], cubeFace[2][0][0]);
+                          
+            swap(cubeFace[4][0][2], cubeFace[0][2][0]);
+            swap(cubeFace[4][1][2], cubeFace[0][1][0]);
+            swap(cubeFace[4][2][2], cubeFace[0][0][0]);
+            break;
         case 2:
-            swap(cubeFace[1][0][2], cubeFace[0][2][2]);
-            swap(cubeFace[1][1][2], cubeFace[0][2][1]);
-            swap(cubeFace[1][2][2], cubeFace[0][2][0]);
+            swap(cubeFace[1][0][2], cubeFace[5][0][0]);
+            swap(cubeFace[1][1][2], cubeFace[5][0][1]);
+            swap(cubeFace[1][2][2], cubeFace[5][0][2]);
 
             swap(cubeFace[1][0][2], cubeFace[3][2][0]);
             swap(cubeFace[1][1][2], cubeFace[3][1][0]);
             swap(cubeFace[1][2][2], cubeFace[3][0][0]);
 
-            swap(cubeFace[1][0][2], cubeFace[5][0][0]);
-            swap(cubeFace[1][1][2], cubeFace[5][0][1]);
-            swap(cubeFace[1][2][2], cubeFace[5][0][2]);
+            swap(cubeFace[1][0][2], cubeFace[0][2][2]);
+            swap(cubeFace[1][1][2], cubeFace[0][2][1]);
+            swap(cubeFace[1][2][2], cubeFace[0][2][0]);
+            break;
+        case 3:
+            swap(cubeFace[2][0][2], cubeFace[5][0][2]);
+            swap(cubeFace[2][1][2], cubeFace[5][1][2]);
+            swap(cubeFace[2][2][2], cubeFace[5][2][2]);
+                          
+            swap(cubeFace[2][0][2], cubeFace[4][2][0]);
+            swap(cubeFace[2][1][2], cubeFace[4][1][0]);
+            swap(cubeFace[2][2][2], cubeFace[4][0][0]);
+                          
+            swap(cubeFace[2][0][2], cubeFace[0][0][2]);
+            swap(cubeFace[2][1][2], cubeFace[0][1][2]);
+            swap(cubeFace[2][2][2], cubeFace[0][2][2]);
+            break;
+        case 4:
+            swap(cubeFace[3][0][2], cubeFace[5][2][2]);
+            swap(cubeFace[3][1][2], cubeFace[5][2][1]);
+            swap(cubeFace[3][2][2], cubeFace[5][2][0]);
+                          
+            swap(cubeFace[3][0][2], cubeFace[1][2][0]);
+            swap(cubeFace[3][1][2], cubeFace[1][1][0]);
+            swap(cubeFace[3][2][2], cubeFace[1][0][0]);
+                          
+            swap(cubeFace[3][0][2], cubeFace[0][0][0]);
+            swap(cubeFace[3][1][2], cubeFace[0][0][1]);
+            swap(cubeFace[3][2][2], cubeFace[0][0][2]);
+            break;
+        case 5:
+            swap(cubeFace[1][2][0], cubeFace[4][2][0]);
+            swap(cubeFace[1][2][1], cubeFace[4][2][1]);
+            swap(cubeFace[1][2][2], cubeFace[4][2][2]);
+                                                
+            swap(cubeFace[1][2][0], cubeFace[3][2][0]);
+            swap(cubeFace[1][2][1], cubeFace[3][2][1]);
+            swap(cubeFace[1][2][2], cubeFace[3][2][2]);
+                                                
+            swap(cubeFace[1][2][0], cubeFace[2][2][0]);
+            swap(cubeFace[1][2][1], cubeFace[2][2][1]);
+            swap(cubeFace[1][2][2], cubeFace[2][2][2]);
+            break;
+        default:
+            break;
         }
     }
     void rotation_counterclockwise(int faceNum) {//逆時針旋轉
         switch (faceNum) {//faceNum為第幾面
 
-        case 2:
-            swap(cubeFace[1][0][2], cubeFace[5][0][0]);
-            swap(cubeFace[1][1][2], cubeFace[5][0][1]);
-            swap(cubeFace[1][2][2], cubeFace[5][0][2]);
+        case 0:
+            swap(cubeFace[1][0][0], cubeFace[4][0][0]);
+            swap(cubeFace[1][0][1], cubeFace[4][0][1]);
+            swap(cubeFace[1][0][2], cubeFace[4][0][2]);
+            swap(cubeFace[1][0][0], cubeFace[3][0][0]);
+            swap(cubeFace[1][0][1], cubeFace[3][0][1]);
+            swap(cubeFace[1][0][2], cubeFace[3][0][2]);
+            swap(cubeFace[1][0][0], cubeFace[2][0][0]);
+            swap(cubeFace[1][0][1], cubeFace[2][0][1]);
+            swap(cubeFace[1][0][2], cubeFace[2][0][2]);
 
+            break;
+        case 1:
+            swap(cubeFace[4][0][2], cubeFace[0][2][0]);
+            swap(cubeFace[4][1][2], cubeFace[0][1][0]);
+            swap(cubeFace[4][2][2], cubeFace[0][0][0]);
+            swap(cubeFace[4][0][2], cubeFace[2][2][0]);
+            swap(cubeFace[4][1][2], cubeFace[2][1][0]);
+            swap(cubeFace[4][2][2], cubeFace[2][0][0]);
+            swap(cubeFace[4][0][2], cubeFace[5][2][0]);
+            swap(cubeFace[4][1][2], cubeFace[5][1][0]);
+            swap(cubeFace[4][2][2], cubeFace[5][0][0]);
+            break;
+        case 2:
+            swap(cubeFace[1][0][2], cubeFace[0][2][2]);
+            swap(cubeFace[1][1][2], cubeFace[0][2][1]);
+            swap(cubeFace[1][2][2], cubeFace[0][2][0]);
             swap(cubeFace[1][0][2], cubeFace[3][2][0]);
             swap(cubeFace[1][1][2], cubeFace[3][1][0]);
             swap(cubeFace[1][2][2], cubeFace[3][0][0]);
+            swap(cubeFace[1][0][2], cubeFace[5][0][0]);
+            swap(cubeFace[1][1][2], cubeFace[5][0][1]);
+            swap(cubeFace[1][2][2], cubeFace[5][0][2]);
+            break;
+        case 3:
+            swap(cubeFace[2][0][2], cubeFace[0][0][2]);
+            swap(cubeFace[2][1][2], cubeFace[0][1][2]);
+            swap(cubeFace[2][2][2], cubeFace[0][2][2]);
+            swap(cubeFace[2][0][2], cubeFace[4][2][0]);
+            swap(cubeFace[2][1][2], cubeFace[4][1][0]);
+            swap(cubeFace[2][2][2], cubeFace[4][0][0]);
+            swap(cubeFace[2][0][2], cubeFace[5][0][2]);
+            swap(cubeFace[2][1][2], cubeFace[5][1][2]);
+            swap(cubeFace[2][2][2], cubeFace[5][2][2]);
 
-            swap(cubeFace[1][0][2], cubeFace[0][2][2]);
-            swap(cubeFace[1][1][2], cubeFace[0][2][1]);
-            swap(cubeFace[1][2][2], cubeFace[0][2][0]);           
+            break;
+        case 4:
+            swap(cubeFace[3][0][2], cubeFace[0][0][0]);
+            swap(cubeFace[3][1][2], cubeFace[0][0][1]);
+            swap(cubeFace[3][2][2], cubeFace[0][0][2]);
+            swap(cubeFace[3][0][2], cubeFace[1][2][0]);
+            swap(cubeFace[3][1][2], cubeFace[1][1][0]);
+            swap(cubeFace[3][2][2], cubeFace[1][0][0]);
+            swap(cubeFace[3][0][2], cubeFace[5][2][2]);
+            swap(cubeFace[3][1][2], cubeFace[5][2][1]);
+            swap(cubeFace[3][2][2], cubeFace[5][2][0]);
+            break;
+        case 5:
+            swap(cubeFace[1][2][0], cubeFace[2][2][0]);
+            swap(cubeFace[1][2][1], cubeFace[2][2][1]);
+            swap(cubeFace[1][2][2], cubeFace[2][2][2]);
+            swap(cubeFace[1][2][0], cubeFace[3][2][0]);
+            swap(cubeFace[1][2][1], cubeFace[3][2][1]);
+            swap(cubeFace[1][2][2], cubeFace[3][2][2]);
+            swap(cubeFace[1][2][0], cubeFace[4][2][0]);
+            swap(cubeFace[1][2][1], cubeFace[4][2][1]);
+            swap(cubeFace[1][2][2], cubeFace[4][2][2]);
+            break;
+        default:
+            break;
         }
     }
-
 
 };
 ostream& operator<<(ostream& os, const cube& cube)
@@ -118,9 +239,39 @@ void show(cube c) {
     while (true) {
         for (int i = 0; i < 6; i++) {
         }
+        for (int j = 0; j < 3; j++) {
+            for (int k = 0; k < 3; k++) {
+                switch (c.cubeFace[0][j][k])
+                {
+                    /// 白0、黃1、橙2、紅3、綠4、藍5
+                case 0:
+                    setfillcolor(0xd0d0d0);
+                    break;
+                case 1:
+                    setfillcolor(YELLOW);
+                    break;
+                case 2:
+                    setfillcolor(0x00a5ff);
+                    break;
+                case 3:
+                    setfillcolor(RED);
+                    break;
+                case 4:
+                    setfillcolor(GREEN);
+                    break;
+                case 5:
+                    setfillcolor(BLUE);
+                    break;
+                default:
+                    setfillcolor(WHITE);
+                }
+                fillrectangle(k * 30 + 90, j * 30, k * 30 + 120, j * 30 + 30);
+            }
+        }
+        for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 3; j++) {
                 for (int k = 0; k < 3; k++) {
-                    switch (c.cubeFace[0][j][k])
+                    switch (c.cubeFace[i + 1][j][k])
                     {
                         /// 白0、黃1、橙2、紅3、綠4、藍5
                     case 0:
@@ -144,71 +295,41 @@ void show(cube c) {
                     default:
                         setfillcolor(WHITE);
                     }
-                    fillrectangle(k * 30+90,  j * 30, k * 30 + 120,  j * 30 + 30);
-                }
-            }
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 3; j++) {
-                    for (int k = 0; k < 3; k++) {
-                        switch (c.cubeFace[i+1][j][k])
-                        {
-                            /// 白0、黃1、橙2、紅3、綠4、藍5
-                        case 0:
-                            setfillcolor(0xd0d0d0);
-                            break;
-                        case 1:
-                            setfillcolor(YELLOW);
-                            break;
-                        case 2:
-                            setfillcolor(0x00a5ff);
-                            break;
-                        case 3:
-                            setfillcolor(RED);
-                            break;
-                        case 4:
-                            setfillcolor(GREEN);
-                            break;
-                        case 5:
-                            setfillcolor(BLUE);
-                            break;
-                        default:
-                            setfillcolor(WHITE);
-                        }
-                        fillrectangle(k * 30 + i*90, j * 30+90, k * 30 + i * 90 + 30, j * 30 + 120);
-                    }
-                    cout << endl;
-                }
-            }
-            for (int j = 0; j < 3; j++) {
-                for (int k = 0; k < 3; k++) {
-                    switch (c.cubeFace[5][j][k])
-                    {
-                        /// 白0、黃1、橙2、紅3、綠4、藍5
-                    case 0:
-                        setfillcolor(0xd0d0d0);
-                        break;
-                    case 1:
-                        setfillcolor(YELLOW);
-                        break;
-                    case 2:
-                        setfillcolor(0x00a5ff);
-                        break;
-                    case 3:
-                        setfillcolor(RED);
-                        break;
-                    case 4:
-                        setfillcolor(GREEN);
-                        break;
-                    case 5:
-                        setfillcolor(BLUE);
-                        break;
-                    default:
-                        setfillcolor(WHITE);
-                    }
-                    fillrectangle(k * 30 + 90, j * 30 + 180, k * 30 +120 , j * 30 + 210);
+                    fillrectangle(k * 30 + i * 90, j * 30 + 90, k * 30 + i * 90 + 30, j * 30 + 120);
                 }
                 cout << endl;
             }
+        }
+        for (int j = 0; j < 3; j++) {
+            for (int k = 0; k < 3; k++) {
+                switch (c.cubeFace[5][j][k])
+                {
+                    /// 白0、黃1、橙2、紅3、綠4、藍5
+                case 0:
+                    setfillcolor(0xd0d0d0);
+                    break;
+                case 1:
+                    setfillcolor(YELLOW);
+                    break;
+                case 2:
+                    setfillcolor(0x00a5ff);
+                    break;
+                case 3:
+                    setfillcolor(RED);
+                    break;
+                case 4:
+                    setfillcolor(GREEN);
+                    break;
+                case 5:
+                    setfillcolor(BLUE);
+                    break;
+                default:
+                    setfillcolor(WHITE);
+                }
+                fillrectangle(k * 30 + 90, j * 30 + 180, k * 30 + 120, j * 30 + 210);
+            }
+            cout << endl;
+        }
     }
 }
 void test() {
@@ -218,18 +339,18 @@ void test() {
         //x橫 起始點 Y起始點，往x延伸多少，往y延伸多少
         setfillcolor(BLUE);
         fillrectangle(0, 300, 50, 400);
-            
 
-            Sleep(1);
-        
+
+        Sleep(1);
+
     }
 }
 int main(void) {
     cube* a = new cube();
-   show(*a);
-   
+    show(*a);
+
     //test();
-   
+
     cout << *a;
     a->showInCh();
     cout << "YA";
