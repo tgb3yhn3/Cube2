@@ -1,75 +1,77 @@
 import tkinter as tk
 import tkinter.font as tkFont
-from enum import Enum
 
 ##########################################################
 #                        全域變數          
 ##########################################################
-class Color(Enum):
-    WHITE  = 0
-    RED    = 1
-    ORANGE = 2
-    YELLOW = 3
-    GREEN  = 4
-    BLUE   = 5
 
-cubeColorData = [[[Color.WHITE for col in range(3)] for row in range(3)] for face in range(6)]    #儲存每個魔術方塊格子的顏色資料
-manuallySelectedColors = Color.WHITE    #手動填色功能中，目前選中的顏色 
+
+cubeColorData = [[['w' for col in range(3)] for row in range(3)] for face in range(6)]    #儲存每個魔術方塊格子的顏色資料
+cubeColorDataString =""
+manuallySelectedColors = 'w'    #手動填色功能中，目前選中的顏色 
 standardPixelSize = 35    #會影響畫面上所有元件的大小(其值相當於魔術方塊中一格的邊長)
 
 ##########################################################
 #                          函式         
 ##########################################################
+def cubeColorDataToString():
+    #功能:把魔術方塊顏色資料轉成字串輸出
+    global cubeColorData
+    global cubeColorDataString
+    cubeColorDataString = ''.join(str(i) for row in cubeColorData for col in row for i in col)
+    
+    
+
 def clickFaceButton(FaceButtons,face,row,col):
     #功能:被按的魔術方塊格子按鈕會根據manuallySelectedColors的值改變顏色，同時也會更改此格的顏色資料(cubeColorData[face][row][col])
     #參數:FaceButtons：所有魔術方塊格子按鈕  face:在魔術方塊的哪一面  num:是同一面中的第幾格
     global cubeColorData
-    if manuallySelectedColors == Color.WHITE:
+    if manuallySelectedColors == 'w':
         FaceButtons[face][row][col].configure(bg = "white")
-        cubeColorData[face][row][col] = Color.WHITE
-    elif manuallySelectedColors == Color.RED:
+        cubeColorData[face][row][col] = 'w'
+    elif manuallySelectedColors == 'r':
         FaceButtons[face][row][col].configure(bg = "red")
-        cubeColorData[face][row][col] = Color.RED
-    elif manuallySelectedColors == Color.ORANGE:
+        cubeColorData[face][row][col] = 'r'
+    elif manuallySelectedColors == 'o':
         FaceButtons[face][row][col].configure(bg = "orange")
-        cubeColorData[face][row][col] = Color.ORANGE
-    elif manuallySelectedColors == Color.YELLOW:
+        cubeColorData[face][row][col] = 'o'
+    elif manuallySelectedColors == 'y':
         FaceButtons[face][row][col].configure(bg = "yellow")
-        cubeColorData[face][row][col] = Color.YELLOW
-    elif manuallySelectedColors == Color.GREEN:
+        cubeColorData[face][row][col] = 'y'
+    elif manuallySelectedColors == 'g':
         FaceButtons[face][row][col].configure(bg = "green")
-        cubeColorData[face][row][col] = Color.GREEN
-    elif manuallySelectedColors == Color.BLUE:
+        cubeColorData[face][row][col] = 'g'
+    elif manuallySelectedColors == 'b':
         FaceButtons[face][row][col].configure(bg = "blue")
-        cubeColorData[face][row][col] = Color.BLUE
+        cubeColorData[face][row][col] = 'b'
 
 def clickManuallySetColorButton(manuallyChooseColorBlock,i):
     #功能:按下手動調色盤的顏色格子按鈕後，會改變manuallySelectedColors的值
     #參數:manuallyChooseColorBlock:被選中的顏色會顯示在這裡  i:第幾個顏色
     global manuallySelectedColors
     if i == 0:
-        manuallySelectedColors = Color.WHITE 
+        manuallySelectedColors = 'w' 
         manuallyChooseColorBlock.configure(bg = "white")
     elif i == 1:
-        manuallySelectedColors = Color.RED 
+        manuallySelectedColors = 'r' 
         manuallyChooseColorBlock.configure(bg = "red")
     elif i == 2:
-        manuallySelectedColors = Color.ORANGE
+        manuallySelectedColors = 'o'
         manuallyChooseColorBlock.configure(bg = "orange")
     elif i == 3:
-        manuallySelectedColors = Color.YELLOW 
+        manuallySelectedColors = 'y' 
         manuallyChooseColorBlock.configure(bg = "yellow")
     elif i == 4:
-        manuallySelectedColors = Color.GREEN 
+        manuallySelectedColors = 'g' 
         manuallyChooseColorBlock.configure(bg = "green")
     elif i == 5:
-        manuallySelectedColors = Color.BLUE 
+        manuallySelectedColors = 'b' 
         manuallyChooseColorBlock.configure(bg = "blue")
 
 def clickStartButton():
     #功能：按下開始執行按鈕的事件，轉回魔術方塊之前，簡單檢查一下魔術方塊能不能成功轉回來
     
-    #1.判斷每面的中間格子顏色是否重複出現
+    #1.錯誤檢查：每面的中間格子顏色是否重複出現
     centerBlock = []
     for i in range(6):
         centerBlock.append(cubeColorData[i][1][1])
@@ -77,64 +79,64 @@ def clickStartButton():
         startErrorMessage.set("每一面中間格子的顏色不能重複!")
         return
     
-    #2.判斷每面的中間格子的對面格子顏色是否符合
+    #2.錯誤檢查：每面的中間格子的對面格子顏色是否符合
     if(True):
-        if(centerBlock[0] == Color.WHITE and centerBlock[5] != Color.YELLOW):
+        if(centerBlock[0] == 'w' and centerBlock[5] != 'y'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[0] == Color.RED and centerBlock[5] != Color.ORANGE):
+        if(centerBlock[0] == 'r' and centerBlock[5] != 'o'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[0] == Color.ORANGE and centerBlock[5] != Color.RED):
+        if(centerBlock[0] == 'o' and centerBlock[5] != 'r'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[0] == Color.YELLOW and centerBlock[5] != Color.WHITE):
+        if(centerBlock[0] == 'y' and centerBlock[5] != 'w'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[0] == Color.GREEN and centerBlock[5] != Color.BLUE):
+        if(centerBlock[0] == 'g' and centerBlock[5] != 'b'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[0] == Color.BLUE and centerBlock[5] != Color.GREEN):
+        if(centerBlock[0] == 'b' and centerBlock[5] != 'g'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[1] == Color.WHITE and centerBlock[3] != Color.YELLOW):
+        if(centerBlock[1] == 'w' and centerBlock[3] != 'y'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[1] == Color.RED and centerBlock[3] != Color.ORANGE):
+        if(centerBlock[1] == 'r' and centerBlock[3] != 'o'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[1] == Color.ORANGE and centerBlock[3] != Color.RED):
+        if(centerBlock[1] == 'o' and centerBlock[3] != 'r'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[1] == Color.YELLOW and centerBlock[3] != Color.WHITE):
+        if(centerBlock[1] == 'y' and centerBlock[3] != 'w'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[1] == Color.GREEN and centerBlock[3] != Color.BLUE):
+        if(centerBlock[1] == 'g' and centerBlock[3] != 'b'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[1] == Color.BLUE and centerBlock[3] != Color.GREEN):
+        if(centerBlock[1] == 'b' and centerBlock[3] != 'g'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[2] == Color.WHITE and centerBlock[4] != Color.YELLOW):
+        if(centerBlock[2] == 'w' and centerBlock[4] != 'y'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[2] == Color.RED and centerBlock[4] != Color.ORANGE):
+        if(centerBlock[2] == 'r' and centerBlock[4] != 'o'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[2] == Color.ORANGE and centerBlock[4] != Color.RED):
+        if(centerBlock[2] == 'o' and centerBlock[4] != 'r'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[2] == Color.YELLOW and centerBlock[4] != Color.WHITE):
+        if(centerBlock[2] == 'y' and centerBlock[4] != 'w'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[2] == Color.GREEN and centerBlock[4] != Color.BLUE):
+        if(centerBlock[2] == 'g' and centerBlock[4] != 'b'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
-        if(centerBlock[2] == Color.BLUE and centerBlock[4] != Color.GREEN):
+        if(centerBlock[2] == 'b' and centerBlock[4] != 'g'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
             return
 
-    #3.每個顏色必須恰好出現9次
+    #3.錯誤檢查：每個顏色必須恰好出現9次
     if(True):
         whiteNum = 0
         redNum = 0
@@ -145,17 +147,17 @@ def clickStartButton():
         for i in range(6):
             for j in range(3):
                 for k in range(3):
-                    if(cubeColorData[i][j][k]== Color.WHITE):
+                    if(cubeColorData[i][j][k]== 'w'):
                         whiteNum += 1
-                    if(cubeColorData[i][j][k]== Color.RED):
+                    if(cubeColorData[i][j][k]== 'r'):
                         redNum += 1
-                    if(cubeColorData[i][j][k]== Color.ORANGE):
+                    if(cubeColorData[i][j][k]== 'o'):
                         orangeNum += 1
-                    if(cubeColorData[i][j][k]== Color.YELLOW):
+                    if(cubeColorData[i][j][k]== 'y'):
                         yellowNum += 1
-                    if(cubeColorData[i][j][k]== Color.GREEN):
+                    if(cubeColorData[i][j][k]== 'g'):
                         greenNum += 1
-                    if(cubeColorData[i][j][k]== Color.BLUE):
+                    if(cubeColorData[i][j][k]== 'b'):
                         blueNum += 1   
         if(whiteNum != 9):
             startErrorMessage.set("同個顏色總共必須剛好9格!")
@@ -175,7 +177,10 @@ def clickStartButton():
         if(blueNum != 9):
             startErrorMessage.set("同個顏色總共必須剛好9格!")
             return
-                         
+  
+    #4.將魔術方塊資料輸出成字串
+    cubeColorDataToString()       
+            
 ##########################################################
 #                         主程式          
 ##########################################################
@@ -184,6 +189,7 @@ def clickStartButton():
 window = tk.Tk()
 window.title('cubeGUI')
 window.geometry('{}x{}'.format(standardPixelSize*16, standardPixelSize*18))
+cubeColorDataToString()
 
 #視窗字體樣式設定
 fontstyle1 = tkFont.Font(family="Helvetica", size=12)
