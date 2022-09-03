@@ -1,6 +1,8 @@
 import tkinter as tk
 import tkinter.font as tkFont
-
+import Cube3x3 as Cube
+import squ
+import twophase.solver as sv
 ##########################################################
 #                        全域變數          
 ##########################################################
@@ -18,7 +20,7 @@ def cubeColorDataToString():
     #功能:把魔術方塊顏色資料轉成字串輸出
     global cubeColorData
     global cubeColorDataString
-    cubeColorDataString = ''.join(str(i) for row in cubeColorData for col in row for i in col)
+    cubeColorDataString = ''.join(str(i[0]) for row in cubeColorData for col in row for i in col)
     
     
 
@@ -82,22 +84,22 @@ def clickStartButton():
     #2.錯誤檢查：每面的中間格子的對面格子顏色是否符合
     if(True):
         if(centerBlock[0] == 'w' and centerBlock[5] != 'y'):
-            startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
+            startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)-白黃")
             return
         if(centerBlock[0] == 'r' and centerBlock[5] != 'o'):
-            startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
+            startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)-紅橘")
             return
         if(centerBlock[0] == 'o' and centerBlock[5] != 'r'):
-            startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
+            startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)-橘紅")
             return
         if(centerBlock[0] == 'y' and centerBlock[5] != 'w'):
-            startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
+            startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)-黃白")
             return
         if(centerBlock[0] == 'g' and centerBlock[5] != 'b'):
-            startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
+            startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)-綠藍")
             return
         if(centerBlock[0] == 'b' and centerBlock[5] != 'g'):
-            startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
+            startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)-藍綠")
             return
         if(centerBlock[1] == 'w' and centerBlock[3] != 'y'):
             startErrorMessage.set("每一面中間格子與它對面的格子顏色不符合!\n(例如中間格子是黃色的話，對面的中間格子必須是白色)")
@@ -147,40 +149,102 @@ def clickStartButton():
         for i in range(6):
             for j in range(3):
                 for k in range(3):
-                    if(cubeColorData[i][j][k]== 'w'):
+                    if(cubeColorData[i][j][k][0]== 'w'):
                         whiteNum += 1
-                    if(cubeColorData[i][j][k]== 'r'):
+                    if(cubeColorData[i][j][k][0]== 'r'):
                         redNum += 1
-                    if(cubeColorData[i][j][k]== 'o'):
+                    if(cubeColorData[i][j][k][0]== 'o'):
                         orangeNum += 1
-                    if(cubeColorData[i][j][k]== 'y'):
+                    if(cubeColorData[i][j][k][0]== 'y'):
                         yellowNum += 1
-                    if(cubeColorData[i][j][k]== 'g'):
+                    if(cubeColorData[i][j][k][0]== 'g'):
                         greenNum += 1
-                    if(cubeColorData[i][j][k]== 'b'):
+                    if(cubeColorData[i][j][k][0]== 'b'):
                         blueNum += 1   
         if(whiteNum != 9):
-            startErrorMessage.set("同個顏色總共必須剛好9格!")
+            startErrorMessage.set("同個顏色總共必須剛好9格!w")
             return
         if(redNum != 9):
-            startErrorMessage.set("同個顏色總共必須剛好9格!")
+            startErrorMessage.set("同個顏色總共必須剛好9格!r")
             return
         if(orangeNum != 9):
-            startErrorMessage.set("同個顏色總共必須剛好9格!")
+            startErrorMessage.set("同個顏色總共必須剛好9格!o")
             return
         if(yellowNum != 9):
-            startErrorMessage.set("同個顏色總共必須剛好9格!")
+            startErrorMessage.set("同個顏色總共必須剛好9格!y")
             return
         if(greenNum != 9):
-            startErrorMessage.set("同個顏色總共必須剛好9格!")
+            startErrorMessage.set("同個顏色總共必須剛好9格!g")
             return
         if(blueNum != 9):
-            startErrorMessage.set("同個顏色總共必須剛好9格!")
+            startErrorMessage.set("同個顏色總共必須剛好9格!b")
             return
   
     #4.將魔術方塊資料輸出成字串
-    cubeColorDataToString()       
-            
+    cubeColorDataToString()      
+    print(sv.solve(string_covert(cubeColorDataString)))
+def string_covert(color_str):
+    result = ''
+    color_dict = {color_str[ 4]: 'U',
+                  color_str[31]: 'R',
+                  color_str[22]: 'F',
+                  color_str[49]: 'D',
+                  color_str[13]: 'L',
+                  color_str[40]: 'B'}
+    for i in range(0, 9):
+        result += color_dict[color_str[i]]
+    for i in range(27, 36):
+        result += color_dict[color_str[i]]
+    for i in range(18, 27):
+        result += color_dict[color_str[i]]
+    for i in range(45, 54):
+        result += color_dict[color_str[i]]
+    for i in range(9, 18):
+        result += color_dict[color_str[i]]
+    for i in range(36, 45):
+        result += color_dict[color_str[i]]
+    return result
+def imageRecognition():
+    #功能:將圖片中的魔術方塊讀出，並存入到陣列
+    from rubikscolorresolver.solver import resolve_colors as color
+    from rubikscubetracker import RubiksVideo as rbvideo
+    from rubikscubetracker import RubiksImage as rbimg
+    rba=rbvideo(0)
+    rbb=rbimg()
+    rbb.analyze_file("F:107334.jpg",3)
+    print(dir(rba))
+    rba.analyze_webcam()
+    arg=["",'--filename', 'F:/webcam.json']
+    ans=color(arg)
+    ir=squ.imageRecognitioner()
+    for i in range(6):
+        for row in range(3):
+            for col in range(3):
+                # cubeColorData[i][col][row]=ir.getColor('img/'+str(i+1)+'.jpg')[row][col]
+                cubeColorData[i][col][row]=ans[col*3+row+i*9]
+    print(cubeColorData)
+    cubeColorDataToString()
+    updateGUIcube()
+
+def updateGUIcube():
+    #功能:更新視窗裡的魔術方塊
+    long_color_name_dict={'r':'red','g':'green','o':'orange','b':'blue','y':'yellow','w':'white'}
+    for face in range(6):
+        for row in range(3):
+            for col in range(3):
+                FaceButtons[face][row][col].configure(bg = long_color_name_dict[cubeColorData[face][row][col]])
+
+def solveCube():
+    #功能:將字串交給solver並給出解答
+    # print(cubeColorDataString)
+    print(cubeColorDataString)
+    cube1 = Cube.Cube3x3(cubeColorDataString)
+    print(cube1.solve())
+
+def imageRecognitionShow():
+    #功能:show出找到的圖
+    ir=squ.imageRecognitioner()
+    ir.example()
 ##########################################################
 #                         主程式          
 ##########################################################
@@ -302,7 +366,15 @@ setColorByCameraButtonFrame.rowconfigure(0, weight = 1)
 setColorByCameraButtonFrame.columnconfigure(0, weight = 1)
 setColorByCameraButtonFrame.grid_propagate(0)
 setColorByCameraButtonFrame.grid(row = 0, column = 10)
-setColorByCameraButton = tk.Button(setColorByCameraButtonFrame,font = fontstyle1,bg = 'lightblue',text='影像辨識自動填色')
+setColorByCameraButton = tk.Button(setColorByCameraButtonFrame,font = fontstyle1,bg = 'lightblue',text='影像辨識自動填色',command=imageRecognition)
+setColorByCameraButton.grid(sticky = "NSWE")
+
+setColorByCameraButtonFrame = tk.Frame(setColorArea,width=standardPixelSize*5,height=standardPixelSize)
+setColorByCameraButtonFrame.rowconfigure(0, weight = 1)
+setColorByCameraButtonFrame.columnconfigure(0, weight = 1)
+setColorByCameraButtonFrame.grid_propagate(0)
+setColorByCameraButtonFrame.grid(row = 1, column = 10)
+setColorByCameraButton = tk.Button(setColorByCameraButtonFrame,font = fontstyle1,bg = 'lightblue',text='影像辨識DeBUG',command=imageRecognitionShow)
 setColorByCameraButton.grid(sticky = "NSWE")
 
 #window -> start
