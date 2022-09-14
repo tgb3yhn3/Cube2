@@ -3,6 +3,7 @@ import tkinter.font as tkFont
 import Cube3x3 as Cube
 import squ
 import twophase.solver as sv
+import stepperMotorSolver as s_motor
 ##########################################################
 #                        全域變數          
 ##########################################################
@@ -182,7 +183,12 @@ def clickStartButton():
   
     #4.將魔術方塊資料輸出成字串
     cubeColorDataToString()      
-    print(sv.solve(string_covert(cubeColorDataString)))
+    
+    #5.透過演算法得出解，並執行旋轉
+    solveString = sv.solve(string_covert(cubeColorDataString))
+    print(solveString)
+    s_motor.startRotation(solveString)
+
 def string_covert(color_str):
     result = ''
     color_dict = {color_str[ 4]: 'U',
@@ -204,6 +210,7 @@ def string_covert(color_str):
     for i in range(36, 45):
         result += color_dict[color_str[i]]
     return result
+
 def imageRecognition():
     #功能:將圖片中的魔術方塊讀出，並存入到陣列
     from rubikscolorresolver.solver import resolve_colors as color
