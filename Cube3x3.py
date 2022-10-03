@@ -1760,18 +1760,27 @@ def string_covert(color_str):
     return result
 
 
+def six_to_five(solution_six: str):
+    solution_five = ''
+    sol = solution_six.split(' ')
+    print(sol)
+    for step in sol:
+        if step == 'U1':
+            solution_five += 'D3 R2 D3 F2 L2 R2 B2 D3 R2 F2 D2 L2 D2 B2 D2 F2 D2 L2 F2 '
+        elif step == 'U2':
+            solution_five += 'D1 F2 D1 R2 B2 F2 L2 D1 F2 R2 D2 B2 D2 L2 D2 R2 D2 B2 R2 D1 F2 D1 R2 B2 F2 L2 D1 F2 R2 D2 B2 D2 L2 D2 R2 D2 B2 R2 '
+        elif step == 'U3':
+            solution_five += 'D1 F2 D1 R2 B2 F2 L2 D1 F2 R2 D2 B2 D2 L2 D2 R2 D2 B2 R2 '
+        else:
+            solution_five += step + ' '
+    print(solution_five)
+    pass
+
+
 if __name__ == '__main__':
 
     cube1 = Cube3x3()
     print('cube1 = Cube3x3()')
-    print(cube1)
-
-    cube1 = Cube3x3('byggwrrwbywbrbrgbrwoogoyyrowwrbgowoywgryrbboogygwybygo')
-    print(cube1)
-
-    print(sv.solve(string_covert('byggwrrwbywbrbrgbrwoogoyyrowwrbgowoywgryrbboogygwybygo')))
-
-    cube1.movements(sv.solve(string_covert('byggwrrwbywbrbrgbrwoogoyyrowwrbgowoywgryrbboogygwybygo')))
     print(cube1)
 
     while True:

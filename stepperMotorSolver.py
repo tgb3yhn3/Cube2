@@ -57,8 +57,6 @@ def run(face,angleNum):
         return
     if face == "L" or face == "U":
         direction *=-1
-    if face == "D":
-        stepsNeeded += 0
     
     '''4個pin腳切到輸出模式，一開始設為低電位'''
     for pin in pin_stepper:
