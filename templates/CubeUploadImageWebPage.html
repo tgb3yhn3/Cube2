@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!-- Latest compiled and minified CSS -->
+        <!-- <link rel="stylesheet" href="static\css\bootstrap.css"> -->
+
+        <!-- jQuery library -->
+        <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <!-- <script src="static\js\bootstrap.js"></script> -->
+        <style type="text/css">
+            input{
+                display: none;
+            }
+            #previewArea{
+                position: relative;
+                float:left;
+                width: 800px;
+                height: 600px;
+            }
+            @media screen and (max-width: 800px){
+                #previewArea{
+                    width: 600px;
+                    height: 450px;
+                }
+            }
+            @media screen and (max-width: 600px){
+                #previewArea{
+                    width: 400px;
+                    height: 300px;
+                }
+            }
+            @media screen and (max-width: 400px){
+                #previewArea{
+                    width: 300px;
+                    height: 225px;
+                }
+            }
+            #previewArea div{
+                position: relative;
+                float:left;
+                width: 500px;
+                height: 500px;
+                max-width:25%;
+                max-height: 33.3%;
+            }
+            #previewArea .borderDiv{
+                box-sizing: border-box;
+                border: 3px black solid;
+            }
+            #previewArea .updateImg{
+                width: 100%;
+                height: 100%;
+                float: center;
+                object-fit: cover;
+            }
+            #previewArea .updateImg:hover{
+                filter: brightness(0.8);
+                cursor: pointer;
+            }
+            .dummy {
+                margin-top: 100%;
+                }
+                .block{
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                bottom: 5px;
+                left: 5px;
+                background: #222;
+                }
+                .btn-square-md {
+                    width: 100px !important;
+                    max-width: 100% !important;
+                    max-height: 100% !important;
+                    height: 100px !important;
+                    text-align: center;
+                    padding: 0px;
+                    font-size:12px;
+                    }
+        </style>
+        <!-- Latest compiled and minified CSS -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+        <!-- Optional theme -->
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
+        <!-- Latest compiled and minified JavaScript -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
+        <script>
+            
+            $(document).ready(function(){
+                for(let i=1;i<=6;i++){
+                    $("#inputImg_face"+i.toString()).change(function(){
+                        let data=document.getElementById("inputImg_face"+i.toString()).files[0]
+                   
+                        var formData=new FormData();
+                        formData.append('img',data)
+                        $.ajax({
+                            url:"/data",
+                            type:"POST",
+                            data:formData,
+                            processData: false,
+                            contentType : false,
+                            async:false
+                        })
+                        getPreviewImageFile(this,i);
+                    })
+                }
+                $("#inputImg_multi").change(function(){
+                    let data=document.getElementById('inputImg_multi').files
+                    for(let i=0;i<6;i++){
+                        $("#previewImg_face"+String(i+1)).click(()=>{
+                            var f=data[i];
+                            var formData=new FormData();
+                            formData.append('img',f)
+                            $.ajax({
+                                url:"/data",
+                                type:"POST",
+                                data:formData,
+                                processData: false,
+                                contentType : false,
+                                async:false,
+                                success:function(response){
+                                    if(response.startsWith('end-')){
+                                        draw_cube(response.substring(4))
+                                    }
+                                    console.log(response)
+                                }
+                            })
+                        })
+                    }
+                    
+                    
+                    //for (let i=0;i<data.length;i++){
+                       
+                        
+                    //}
+                   
+                    getMultiPreviewImageFile(this);
+                    
+                })
+            })
+
+            function getPreviewImageFile(input,faceNum){
+                faceNum = faceNum.toString();
+                if(input.files && input.files[0]){
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                    $("#previewImg_face"+faceNum).attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            function getMultiPreviewImageFile(input){
+                if(input.files && input.files.length > 0){
+                    var imgNum = input.files.length
+                    if(imgNum > 6){
+                        imgNum = 6;
+                    }
+                    for(let i = 1; i <= imgNum; i++){
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                        $("#previewImg_face"+i).attr('src', e.target.result);
+                        }
+                       
+                        reader.readAsDataURL(input.files[i-1]);
+                    }
+                  
+                }
+            }
+
+        </script>
+    </head>
+    <Body>
+        <!-- <div class="container col-6">
+            <button type="button" class="btn btn-primary btn-square-md">Primary</button>
+            <button type="button" class="btn btn-secondary btn-square-md">Secondary</button>
+            <button type="button" class="btn btn-success btn-square-md">Success</button>
+            <div class=" row  ">
+                <div class="col-3  ">&nbsp;
+                    <div class=" row bg-dark ">
+                        <div class=" border border-2 border-dark rounded-3 col-4 bg-white ">&nbsp;</div>
+                        <div class=" border border-2 border-dark rounded-3 col-4 bg-white ">&nbsp;</div>
+                        <div class=" border border-2 border-dark rounded-3 col-4 bg-white ">&nbsp;</div>
+                        
+                    </div>
+                    <div class=" row bg-dark ">
+                        <div class=" border border-2 border-dark rounded-3 col-4 bg-white ">&nbsp;</div>
+                        <div class=" border border-2 border-dark rounded-3 col-4 bg-white ">&nbsp;</div>
+                        <div class=" border border-2 border-dark rounded-3 col-4 bg-white ">&nbsp;</div>
+                    </div>
+                    <div class=" row bg-dark ">
+                        <div class=" border border-2 border-dark rounded-3 col-4 bg-white ">&nbsp;</div>
+                        <div class=" border border-2 border-dark rounded-3 col-4 bg-white ">&nbsp;</div>
+                        <div class=" border border-2 border-dark rounded-3 col-4 bg-white ">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="col-3 bg-primary ">&nbsp;</div>
+                <div class="col-3 bg-white ">&nbsp;</div>
+                <div class="col-3 bg-white ">&nbsp;</div>
+            </div>
+            <div class=" row bg-dark ">
+                <div class="col-3 bg-dark ">&nbsp;</div>
+                <div class="col-3 bg-primary ">&nbsp;</div>
+                <div class="col-3 bg-danger ">&nbsp;</div>
+                <div class="col-3 bg-info ">&nbsp;</div>
+            </div>
+            <div class=" row bg-dark ">
+                <div class="col-3 bg-white ">&nbsp;</div>
+                <div class="col-3 bg-primary ">&nbsp;</div>
+                <div class="col-3 bg-white ">&nbsp;</div>
+                <div class="col-3 bg-white ">&nbsp;</div>
+            </div>
+
+            <div class="bg-blue-500 text-white w-40 h-40 text-center border-8
+                border-blue-300 rounded-3xl">
+                兔兔方塊
+            </div> -->
+        
+
+        <div id="previewArea">
+            <div></div>
+            <div class="borderDiv">
+                <label>
+                    <img class="updateImg" id="previewImg_face1"
+                        src="/static/images/chooseImgBtn.png" alt="選擇一張圖片"/>
+                    <!-- <input id="inputImg_face1" name = "inputImg_face1" type = "file" accept="image/jpeg,image/png"> -->
+                </label>
+            </div>
+            <div>
+                <label>
+                    <img class="updateImg" id="previewImg_face1"
+                        src="/static/images/chooseMultiImgBtn.png"
+                        alt="選擇多張圖片"/>
+                    <input id="inputImg_multi" name="inputImg_multi"
+                        style="display: none;" type="file"
+                        accept="image/jpeg,image/png" multiple="multiple">
+                </label>
+            </div>
+            <div>
+                <label>
+                    <img class="updateImg" id="submit"
+                        src="/static/images/submitBtn.png" alt="提交"/>
+                    <!-- <input id="submitBtn" type = "submit" onClick="javascript: return confirm('確認提交?');"> -->
+                </label>
+            </div>
+            <div class="borderDiv">
+                <label>
+                    <img class="updateImg" id="previewImg_face2"
+                        src="/static/images/chooseImgBtn.png" alt="選擇一張圖片"/>
+                    <!-- <input id="inputImg_face2" name = "inputImg_face2" type = "file" accept="image/jpeg,image/png"> -->
+                </label>
+            </div>
+            <div class="borderDiv">
+                <label>
+                    <img class="updateImg" id="previewImg_face3"
+                        src="/static/images/chooseImgBtn.png" alt="選擇一張圖片"/>
+                    <!-- <input id="inputImg_face3" name = "inputImg_face3" type = "file" accept="image/jpeg,image/png"> -->
+                </label>
+            </div>
+            <div class="borderDiv">
+                <label>
+                    <img class="updateImg" id="previewImg_face4"
+                        src="/static/images/chooseImgBtn.png" alt="選擇一張圖片"/>
+                    <!-- <input id="inputImg_face4" name = "inputImg_face4" type = "file" accept="image/jpeg,image/png"> -->
+                </label>
+            </div>
+            <div class="borderDiv">
+                <label>
+                    <img class="updateImg" id="previewImg_face5"
+                        src="/static/images/chooseImgBtn.png" alt="選擇一張圖片"/>
+                    <!-- <input id="inputImg_face5" name = "inputImg_face5" type = "file" accept="image/jpeg,image/png"> -->
+                </label>
+            </div>
+            <div></div>
+            <div class="borderDiv">
+                <label>
+                    <img class="updateImg" id="previewImg_face6"
+                        src="/static/images/chooseImgBtn.png" alt="選擇一張圖片"/>
+                    <!-- <input id="inputImg_face6" name = "inputImg_face6" type = "file" accept="image/jpeg,image/png"> -->
+                </label>
+            </div>
+            <div id="a"></div>
+            <div></div>
+        </div>
+
+        <!-- </form> -->
+        <canvas id="canva"></canvas>
+        <br>
+        
+
+
+    </Body>
+    <script> 
+        function draw_cube(draw_str,cube_width=50){
+            let canvas = document.getElementById("canva");
+            //接著指定繪圖方式
+            let ctx = canvas.getContext("2d");
+            //讓canvas的高度和寬度等於整個畫面，讓整個視窗都是你的畫布
+            canvas.height = window.innerHeight/3;
+            canvas.width = window.innerWidth;
+            ctx.beginPath()
+            //沿用寬度及色彩設定
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "#000000"
+            ctx.fillStyle = "orange"
+            //let str_color="bbrbbybbwwwwrrrooorrgyygwwgroyroyroyboobwwbyyggyggwggo"
+            let str_color=draw_str
+            let dict={
+                "b":'#1E90FF',
+                "r":'red',
+                "y":'yellow',
+                "g":'green',
+                "w":'white',
+                "o":'orange'
+            }
+            /*使用rect(x,y,w,h)繪製四角形
+            x,y一樣是座標，w和h是四邊形的寬和高*/
+            let width=cube_width
+            let margin=5
+            let small_width=width/3
+            ctx.beginPath()
+            ctx.rect(width+margin+width,width,width,width);
+          
+            for(let ini=0;ini<3;ini++){
+                for(let inj=0;inj<3;inj++){
+                    ctx.beginPath()
+                    ctx.fillStyle=dict[str_color[inj*3+ini]]
+                    ctx.rect(width+(margin+width)+ (ini*small_width) ,width+(inj*small_width),small_width,small_width);
+                    ctx.fill()
+                    ctx.stroke()
+                }
+            }
+            for (let i=0;i<4;i++){
+                ctx.rect(width+(margin+width)*i,width+margin+width,width,width);
+                for(let ini=0;ini<3;ini++){
+                    for(let inj=0;inj<3;inj++){
+                        ctx.beginPath()
+                        ctx.fillStyle=dict[str_color[inj*3+ini+9*(i+1)]]
+                        ctx.rect(width+(margin+width)*i+ (ini*small_width) ,width+margin+width+(inj*small_width),small_width,small_width);
+                        ctx.fill()
+                        ctx.stroke()
+                    }
+                }
+            }
+            
+            ctx.rect(width+margin+width,width+(margin+width)*2,width,width);
+            for(let ini=0;ini<3;ini++){
+                for(let inj=0;inj<3;inj++){
+                    ctx.beginPath()
+                    ctx.rect(width+margin+width+ (ini*small_width) ,width+(margin+width)*2+(inj*small_width),small_width,small_width);
+                    ctx.fillStyle=dict[str_color[inj*3+ini+45]]
+                    ctx.fill()
+                    ctx.stroke()
+                }
+            }
+           
+        }
+        
+        
+           
+    </script>
+</html>
