@@ -366,7 +366,7 @@ def string_covert(color_str):
 def imageRecognition():
     #功能:將圖片中的魔術方塊讀出，並存入到陣列
 
-    rba=rbvideo(0)
+    rba=rbvideo(2)
     #rbb=rbimg()
     #rbb.analyze_file("F:107334.jpg",3)
     #print(dir(rba))
