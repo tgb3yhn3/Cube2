@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+div.clear {
+    clear: both;
+}
+
+div.clear_left {
+    clear: left;
+}
+
+div.side {
+    margin: 10px;
+    float: left;
+}
+
+div.col1,
+div.col2 {
+    float: left;
+}
+
+div.col3 {
+    margin-left: 80px;
+}
+div#upper,
+div#down {
+    margin-left: 150px;
+}
+
+span.half_square {
+    width: 20px;
+    height: 40px;
+    white-space-collapsing: discard;
+    display: inline-block;
+    color: black;
+    font-weight: bold;
+    line-height: 40px;
+    text-align: center;
+}
+
+span.square {
+    width: 40px;
+    height: 40px;
+    white-space-collapsing: discard;
+    display: inline-block;
+    color: black;
+    font-weight: bold;
+    line-height: 40px;
+    text-align: center;
+}
+
+div.square {
+    width: 40px;
+    height: 40px;
+    color: black;
+    font-weight: bold;
+    line-height: 40px;
+    text-align: center;
+}
+
+div.square span {
+  display:        inline-block;
+  vertical-align: middle;
+  line-height:    normal;
+}
+
+div#colormapping {
+    float: left;
+}
+
+div#bottom {
+    cursor: pointer;
+}
+
+div#bottom div.initial_rgb_values {
+    display: none;
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+$(document).ready(function()
+{
+    $("div#bottom").click(function(event)
+    {
+        if ($("div#bottom div.final_cube").is(":visible")) {
+            $("div#bottom div.initial_rgb_values").show();
+            $("div#bottom div.final_cube").hide();
+        } else {
+            $("div#bottom div.initial_rgb_values").hide();
+            $("div#bottom div.final_cube").show();
+        }
+    })
+});
+</script>
+
+
+<title>Rubiks Cube Color Resolver</title>
+</head>
+<body>
+<h1>RGB Input</h1>
+<pre>{'1': (18, 150, 149), '2': (0, 97, 206), '3': (21, 156, 147), '4': (10, 154, 149), '5': (0, 158, 144), '6': (0, 159, 138), '7': (144, 86, 77), '8': (1, 158, 141), '9': (0, 152, 125), '10': (140, 185, 122), '11': (143, 186, 111), '12': (144, 184, 103), '13': (142, 193, 111), '14': (145, 195, 99), '15': (146, 187, 86), '16': (141, 188, 102), '17': (142, 186, 84), '18': (145, 182, 79), '19': (0, 119, 254), '20': (246, 185, 152), '21': (173, 100, 74), '22': (0, 118, 255), '23': (178, 86, 60), '24': (172, 81, 46), '25': (0, 115, 254), '26': (173, 97, 77), '27': (167, 86, 54), '28': (128, 162, 200), '29': (131, 162, 193), '30': (133, 159, 183), '31': (131, 166, 201), '32': (133, 165, 199), '33': (133, 159, 184), '34': (129, 161, 193), '35': (130, 159, 188), '36': (132, 155, 178), '37': (242, 159, 126), '38': (245, 158, 122), '39': (245, 158, 118), '40': (249, 163, 126), '41': (250, 161, 120), '42': (251, 157, 111), '43': (250, 158, 116), '44': (154, 71, 24), '45': (151, 72, 23), '46': (245, 165, 148), '47': (0, 105, 237), '48': (0, 103, 230), '49': (154, 97, 91), '50': (0, 107, 250), '51': (0, 96, 238), '52': (3, 169, 161), '53': (0, 174, 153), '54': (0, 100, 236)}</pre>
+<div class='cube initial_rgb_values'><h1>Initial RGB values</h1>
+<div class='side' id='upper'>
+    <div class='square col1' title='RGB (18, 150, 149), Lab (56, -31, -8), color None' style='background-color: #129695;'><span>01</span></div>
+    <div class='square col2' title='RGB (0, 97, 206), Lab (42, 19, -62), color None' style='background-color: #0061ce;'><span>02</span></div>
+    <div class='square col3' title='RGB (21, 156, 147), Lab (58, -35, -4), color None' style='background-color: #159c93;'><span>03</span></div>
+    <div class='square col1' title='RGB (10, 154, 149), Lab (57, -34, -6), color None' style='background-color: #0a9a95;'><span>04</span></div>
+    <div class='square col2' title='RGB (0, 158, 144), Lab (58, -37, -2), color None' style='background-color: #009e90;'><span>05</span></div>
+    <div class='square col3' title='RGB (0, 159, 138), Lab (58, -40, 1), color None' style='background-color: #009f8a;'><span>06</span></div>
+    <div class='square col1' title='RGB (144, 86, 77), Lab (42, 22, 15), color None' style='background-color: #90564d;'><span>07</span></div>
+    <div class='square col2' title='RGB (1, 158, 141), Lab (58, -38, 0), color None' style='background-color: #019e8d;'><span>08</span></div>
+    <div class='square col3' title='RGB (0, 152, 125), Lab (56, -40, 4), color None' style='background-color: #00987d;'><span>09</span></div>
+</div>
+<div class='clear'></div>
+<div class='side' id='left'>
+    <div class='square col1' title='RGB (140, 185, 122), Lab (70, -26, 27), color None' style='background-color: #8cb97a;'><span>10</span></div>
+    <div class='square col2' title='RGB (143, 186, 111), Lab (70, -27, 33), color None' style='background-color: #8fba6f;'><span>11</span></div>
+    <div class='square col3' title='RGB (144, 184, 103), Lab (70, -27, 36), color None' style='background-color: #90b867;'><span>12</span></div>
+    <div class='square col1' title='RGB (142, 193, 111), Lab (72, -31, 35), color None' style='background-color: #8ec16f;'><span>13</span></div>
+    <div class='square col2' title='RGB (145, 195, 99), Lab (73, -32, 42), color None' style='background-color: #91c363;'><span>14</span></div>
+    <div class='square col3' title='RGB (146, 187, 86), Lab (71, -30, 46), color None' style='background-color: #92bb56;'><span>15</span></div>
+    <div class='square col1' title='RGB (141, 188, 102), Lab (71, -30, 38), color None' style='background-color: #8dbc66;'><span>16</span></div>
+    <div class='square col2' title='RGB (142, 186, 84), Lab (70, -31, 46), color None' style='background-color: #8eba54;'><span>17</span></div>
+    <div class='square col3' title='RGB (145, 182, 79), Lab (69, -28, 47), color None' style='background-color: #91b64f;'><span>18</span></div>
+</div>
+<div class='side' id='front'>
+    <div class='square col1' title='RGB (0, 119, 254), Lab (52, 24, -74), color None' style='background-color: #0077fe;'><span>19</span></div>
+    <div class='square col2' title='RGB (246, 185, 152), Lab (79, 17, 25), color None' style='background-color: #f6b998;'><span>20</span></div>
+    <div class='square col3' title='RGB (173, 100, 74), Lab (50, 26, 27), color None' style='background-color: #ad644a;'><span>21</span></div>
+    <div class='square col1' title='RGB (0, 118, 255), Lab (52, 25, -75), color None' style='background-color: #0076ff;'><span>22</span></div>
+    <div class='square col2' title='RGB (178, 86, 60), Lab (47, 35, 32), color None' style='background-color: #b2563c;'><span>23</span></div>
+    <div class='square col3' title='RGB (172, 81, 46), Lab (45, 34, 37), color None' style='background-color: #ac512e;'><span>24</span></div>
+    <div class='square col1' title='RGB (0, 115, 254), Lab (51, 26, -76), color None' style='background-color: #0073fe;'><span>25</span></div>
+    <div class='square col2' title='RGB (173, 97, 77), Lab (49, 28, 24), color None' style='background-color: #ad614d;'><span>26</span></div>
+    <div class='square col3' title='RGB (167, 86, 54), Lab (45, 30, 33), color None' style='background-color: #a75636;'><span>27</span></div>
+</div>
+<div class='side' id='right'>
+    <div class='square col1' title='RGB (128, 162, 200), Lab (65, -2, -23), color None' style='background-color: #80a2c8;'><span>28</span></div>
+    <div class='square col2' title='RGB (131, 162, 193), Lab (65, -3, -19), color None' style='background-color: #83a2c1;'><span>29</span></div>
+    <div class='square col3' title='RGB (133, 159, 183), Lab (64, -3, -15), color None' style='background-color: #859fb7;'><span>30</span></div>
+    <div class='square col1' title='RGB (131, 166, 201), Lab (66, -3, -21), color None' style='background-color: #83a6c9;'><span>31</span></div>
+    <div class='square col2' title='RGB (133, 165, 199), Lab (66, -2, -20), color None' style='background-color: #85a5c7;'><span>32</span></div>
+    <div class='square col3' title='RGB (133, 159, 184), Lab (64, -3, -15), color None' style='background-color: #859fb8;'><span>33</span></div>
+    <div class='square col1' title='RGB (129, 161, 193), Lab (64, -3, -20), color None' style='background-color: #81a1c1;'><span>34</span></div>
+    <div class='square col2' title='RGB (130, 159, 188), Lab (64, -3, -18), color None' style='background-color: #829fbc;'><span>35</span></div>
+    <div class='square col3' title='RGB (132, 155, 178), Lab (62, -2, -14), color None' style='background-color: #849bb2;'><span>36</span></div>
+</div>
+<div class='side' id='back'>
+    <div class='square col1' title='RGB (242, 159, 126), Lab (73, 27, 29), color None' style='background-color: #f29f7e;'><span>37</span></div>
+    <div class='square col2' title='RGB (245, 158, 122), Lab (73, 28, 32), color None' style='background-color: #f59e7a;'><span>38</span></div>
+    <div class='square col3' title='RGB (245, 158, 118), Lab (73, 28, 34), color None' style='background-color: #f59e76;'><span>39</span></div>
+    <div class='square col1' title='RGB (249, 163, 126), Lab (74, 27, 32), color None' style='background-color: #f9a37e;'><span>40</span></div>
+    <div class='square col2' title='RGB (250, 161, 120), Lab (74, 28, 34), color None' style='background-color: #faa178;'><span>41</span></div>
+    <div class='square col3' title='RGB (251, 157, 111), Lab (73, 30, 38), color None' style='background-color: #fb9d6f;'><span>42</span></div>
+    <div class='square col1' title='RGB (250, 158, 116), Lab (73, 30, 36), color None' style='background-color: #fa9e74;'><span>43</span></div>
+    <div class='square col2' title='RGB (154, 71, 24), Lab (40, 31, 42), color None' style='background-color: #9a4718;'><span>44</span></div>
+    <div class='square col3' title='RGB (151, 72, 23), Lab (40, 30, 42), color None' style='background-color: #974817;'><span>45</span></div>
+</div>
+<div class='clear'></div>
+<div class='side' id='down'>
+    <div class='square col1' title='RGB (245, 165, 148), Lab (75, 27, 20), color None' style='background-color: #f5a594;'><span>46</span></div>
+    <div class='square col2' title='RGB (0, 105, 237), Lab (47, 26, -73), color None' style='background-color: #0069ed;'><span>47</span></div>
+    <div class='square col3' title='RGB (0, 103, 230), Lab (46, 24, -70), color None' style='background-color: #0067e6;'><span>48</span></div>
+    <div class='square col1' title='RGB (154, 97, 91), Lab (47, 22, 13), color None' style='background-color: #9a615b;'><span>49</span></div>
+    <div class='square col2' title='RGB (0, 107, 250), Lab (48, 30, -77), color None' style='background-color: #006bfa;'><span>50</span></div>
+    <div class='square col3' title='RGB (0, 96, 238), Lab (44, 32, -77), color None' style='background-color: #0060ee;'><span>51</span></div>
+    <div class='square col1' title='RGB (3, 169, 161), Lab (62, -37, -6), color None' style='background-color: #03a9a1;'><span>52</span></div>
+    <div class='square col2' title='RGB (0, 174, 153), Lab (63, -42, 0), color None' style='background-color: #00ae99;'><span>53</span></div>
+    <div class='square col3' title='RGB (0, 100, 236), Lab (45, 29, -74), color None' style='background-color: #0064ec;'><span>54</span></div>
+</div>
+<div class='clear'></div>
+</div><div class='clear colors'>
+<h2>crayola box</h2>
+<span class='square' style='background-color:#ffffff' title='RGB (255, 255, 255), Lab (100, 0, 0), color Wh'>Wh</span>
+<span class='square' style='background-color:#ffff00' title='RGB (255, 255, 0), Lab (97, -21, 94), color Ye'>Ye</span>
+<span class='square' style='background-color:#14694a' title='RGB (20, 105, 74), Lab (39, -32, 10), color Gr'>Gr</span>
+<span class='square' style='background-color:#163967' title='RGB (22, 57, 103), Lab (23, 5, -30), color Bu'>Bu</span>
+<span class='square' style='background-color:#943509' title='RGB (148, 53, 9), Lab (35, 38, 43), color OR'>OR</span>
+<span class='square' style='background-color:#680402' title='RGB (104, 4, 2), Lab (20, 40, 29), color Rd'>Rd</span>
+<br></div>
+<div class='clear colors'>
+<h2>corners for color_box</h2>
+<span class='square' style='background-color:#0077fe' title='RGB (0, 119, 254), Lab (52, 24, -74), color Bu, side None'>19</span>
+<span class='square' style='background-color:#0073fe' title='RGB (0, 115, 254), Lab (51, 26, -76), color Bu, side None'>25</span>
+<span class='square' style='background-color:#0064ec' title='RGB (0, 100, 236), Lab (45, 29, -74), color Bu, side None'>54</span>
+<span class='square' style='background-color:#0067e6' title='RGB (0, 103, 230), Lab (46, 24, -70), color Bu, side None'>48</span>
+<br><span class='square' style='background-color:#80a2c8' title='RGB (128, 162, 200), Lab (65, -2, -23), color Wh, side None'>28</span>
+<span class='square' style='background-color:#81a1c1' title='RGB (129, 161, 193), Lab (64, -3, -20), color Wh, side None'>34</span>
+<span class='square' style='background-color:#859fb7' title='RGB (133, 159, 183), Lab (64, -3, -15), color Wh, side None'>30</span>
+<span class='square' style='background-color:#849bb2' title='RGB (132, 155, 178), Lab (62, -2, -14), color Wh, side None'>36</span>
+<br><span class='square' style='background-color:#129695' title='RGB (18, 150, 149), Lab (56, -31, -8), color Gr, side None'>1</span>
+<span class='square' style='background-color:#159c93' title='RGB (21, 156, 147), Lab (58, -35, -4), color Gr, side None'>3</span>
+<span class='square' style='background-color:#03a9a1' title='RGB (3, 169, 161), Lab (62, -37, -6), color Gr, side None'>52</span>
+<span class='square' style='background-color:#00987d' title='RGB (0, 152, 125), Lab (56, -40, 4), color Gr, side None'>9</span>
+<br><span class='square' style='background-color:#8cb97a' title='RGB (140, 185, 122), Lab (70, -26, 27), color Ye, side None'>10</span>
+<span class='square' style='background-color:#90b867' title='RGB (144, 184, 103), Lab (70, -27, 36), color Ye, side None'>12</span>
+<span class='square' style='background-color:#8dbc66' title='RGB (141, 188, 102), Lab (71, -30, 38), color Ye, side None'>16</span>
+<span class='square' style='background-color:#91b64f' title='RGB (145, 182, 79), Lab (69, -28, 47), color Ye, side None'>18</span>
+<br><span class='square' style='background-color:#fa9e74' title='RGB (250, 158, 116), Lab (73, 30, 36), color OR, side None'>43</span>
+<span class='square' style='background-color:#f59e76' title='RGB (245, 158, 118), Lab (73, 28, 34), color OR, side None'>39</span>
+<span class='square' style='background-color:#f29f7e' title='RGB (242, 159, 126), Lab (73, 27, 29), color OR, side None'>37</span>
+<span class='square' style='background-color:#f5a594' title='RGB (245, 165, 148), Lab (75, 27, 20), color OR, side None'>46</span>
+<br><span class='square' style='background-color:#90564d' title='RGB (144, 86, 77), Lab (42, 22, 15), color Rd, side None'>7</span>
+<span class='square' style='background-color:#ad644a' title='RGB (173, 100, 74), Lab (50, 26, 27), color Rd, side None'>21</span>
+<span class='square' style='background-color:#a75636' title='RGB (167, 86, 54), Lab (45, 30, 33), color Rd, side None'>27</span>
+<span class='square' style='background-color:#974817' title='RGB (151, 72, 23), Lab (40, 30, 42), color Rd, side None'>45</span>
+<br></div>
+<div class='clear colors'>
+<h2>color_box</h2>
+<span class='square' style='background-color:#82a0bc' title='RGB (130, 160, 188), Lab (64, -3, -17), color Wh'>Wh</span>
+<span class='square' style='background-color:#8eb866' title='RGB (142, 184, 102), Lab (70, -28, 37), color Ye'>Ye</span>
+<span class='square' style='background-color:#0a9a94' title='RGB (10, 154, 148), Lab (57, -34, -6), color Gr'>Gr</span>
+<span class='square' style='background-color:#006df5' title='RGB (0, 109, 245), Lab (48, 26, -74), color Bu'>Bu</span>
+<span class='square' style='background-color:#f59e7a' title='RGB (245, 158, 122), Lab (73, 28, 32), color OR'>OR</span>
+<span class='square' style='background-color:#9f5640' title='RGB (159, 86, 64), Lab (44, 27, 26), color Rd'>Rd</span>
+<br></div>
+<div class='clear colors'>
+<h2>corners</h2>
+<span class='square' style='background-color:#82a0bc' title='RGB (130, 160, 188), Lab (64, -3, -17), color Wh, side None'>None</span>
+<span class='square' style='background-color:#81a1c1' title='RGB (129, 161, 193), Lab (64, -3, -20), color Wh, side None'>34</span>
+<span class='half_square'></span><span class='square' style='background-color:#8eb866' title='RGB (142, 184, 102), Lab (70, -28, 37), color Ye, side None'>None</span>
+<span class='square' style='background-color:#91b64f' title='RGB (145, 182, 79), Lab (69, -28, 47), color Ye, side None'>18</span>
+<span class='half_square'></span><span class='square' style='background-color:#82a0bc' title='RGB (130, 160, 188), Lab (64, -3, -17), color Wh, side None'>None</span>
+<span class='square' style='background-color:#849bb2' title='RGB (132, 155, 178), Lab (62, -2, -14), color Wh, side None'>36</span>
+<span class='half_square'></span><span class='square' style='background-color:#8eb866' title='RGB (142, 184, 102), Lab (70, -28, 37), color Ye, side None'>None</span>
+<span class='square' style='background-color:#90b867' title='RGB (144, 184, 103), Lab (70, -27, 36), color Ye, side None'>12</span>
+<span class='half_square'></span><span class='square' style='background-color:#8eb866' title='RGB (142, 184, 102), Lab (70, -28, 37), color Ye, side None'>None</span>
+<span class='square' style='background-color:#8cb97a' title='RGB (140, 185, 122), Lab (70, -26, 27), color Ye, side None'>10</span>
+<span class='half_square'></span><span class='square' style='background-color:#82a0bc' title='RGB (130, 160, 188), Lab (64, -3, -17), color Wh, side None'>None</span>
+<span class='square' style='background-color:#859fb7' title='RGB (133, 159, 183), Lab (64, -3, -15), color Wh, side None'>30</span>
+<span class='half_square'></span><span class='square' style='background-color:#82a0bc' title='RGB (130, 160, 188), Lab (64, -3, -17), color Wh, side None'>None</span>
+<span class='square' style='background-color:#80a2c8' title='RGB (128, 162, 200), Lab (65, -2, -23), color Wh, side None'>28</span>
+<span class='half_square'></span><span class='square' style='background-color:#8eb866' title='RGB (142, 184, 102), Lab (70, -28, 37), color Ye, side None'>None</span>
+<span class='square' style='background-color:#8dbc66' title='RGB (141, 188, 102), Lab (71, -30, 38), color Ye, side None'>16</span>
+<br><span class='square' style='background-color:#006df5' title='RGB (0, 109, 245), Lab (48, 26, -74), color Bu, side None'>None</span>
+<span class='square' style='background-color:#0067e6' title='RGB (0, 103, 230), Lab (46, 24, -70), color Bu, side None'>48</span>
+<span class='half_square'></span><span class='square' style='background-color:#006df5' title='RGB (0, 109, 245), Lab (48, 26, -74), color Bu, side None'>None</span>
+<span class='square' style='background-color:#0073fe' title='RGB (0, 115, 254), Lab (51, 26, -76), color Bu, side None'>25</span>
+<span class='half_square'></span><span class='square' style='background-color:#f59e7a' title='RGB (245, 158, 122), Lab (73, 28, 32), color OR, side None'>None</span>
+<span class='square' style='background-color:#fa9e74' title='RGB (250, 158, 116), Lab (73, 30, 36), color OR, side None'>43</span>
+<span class='half_square'></span><span class='square' style='background-color:#9f5640' title='RGB (159, 86, 64), Lab (44, 27, 26), color Rd, side None'>None</span>
+<span class='square' style='background-color:#90564d' title='RGB (144, 86, 77), Lab (42, 22, 15), color Rd, side None'>7</span>
+<span class='half_square'></span><span class='square' style='background-color:#f59e7a' title='RGB (245, 158, 122), Lab (73, 28, 32), color OR, side None'>None</span>
+<span class='square' style='background-color:#f59e76' title='RGB (245, 158, 118), Lab (73, 28, 34), color OR, side None'>39</span>
+<span class='half_square'></span><span class='square' style='background-color:#0a9a94' title='RGB (10, 154, 148), Lab (57, -34, -6), color Gr, side None'>None</span>
+<span class='square' style='background-color:#159c93' title='RGB (21, 156, 147), Lab (58, -35, -4), color Gr, side None'>3</span>
+<span class='half_square'></span><span class='square' style='background-color:#9f5640' title='RGB (159, 86, 64), Lab (44, 27, 26), color Rd, side None'>None</span>
+<span class='square' style='background-color:#ad644a' title='RGB (173, 100, 74), Lab (50, 26, 27), color Rd, side None'>21</span>
+<span class='half_square'></span><span class='square' style='background-color:#0a9a94' title='RGB (10, 154, 148), Lab (57, -34, -6), color Gr, side None'>None</span>
+<span class='square' style='background-color:#03a9a1' title='RGB (3, 169, 161), Lab (62, -37, -6), color Gr, side None'>52</span>
+<br><span class='square' style='background-color:#9f5640' title='RGB (159, 86, 64), Lab (44, 27, 26), color Rd, side None'>None</span>
+<span class='square' style='background-color:#a75636' title='RGB (167, 86, 54), Lab (45, 30, 33), color Rd, side None'>27</span>
+<span class='half_square'></span><span class='square' style='background-color:#f59e7a' title='RGB (245, 158, 122), Lab (73, 28, 32), color OR, side None'>None</span>
+<span class='square' style='background-color:#f5a594' title='RGB (245, 165, 148), Lab (75, 27, 20), color OR, side None'>46</span>
+<span class='half_square'></span><span class='square' style='background-color:#006df5' title='RGB (0, 109, 245), Lab (48, 26, -74), color Bu, side None'>None</span>
+<span class='square' style='background-color:#0064ec' title='RGB (0, 100, 236), Lab (45, 29, -74), color Bu, side None'>54</span>
+<span class='half_square'></span><span class='square' style='background-color:#006df5' title='RGB (0, 109, 245), Lab (48, 26, -74), color Bu, side None'>None</span>
+<span class='square' style='background-color:#0077fe' title='RGB (0, 119, 254), Lab (52, 24, -74), color Bu, side None'>19</span>
+<span class='half_square'></span><span class='square' style='background-color:#0a9a94' title='RGB (10, 154, 148), Lab (57, -34, -6), color Gr, side None'>None</span>
+<span class='square' style='background-color:#129695' title='RGB (18, 150, 149), Lab (56, -31, -8), color Gr, side None'>1</span>
+<span class='half_square'></span><span class='square' style='background-color:#f59e7a' title='RGB (245, 158, 122), Lab (73, 28, 32), color OR, side None'>None</span>
+<span class='square' style='background-color:#f29f7e' title='RGB (242, 159, 126), Lab (73, 27, 29), color OR, side None'>37</span>
+<span class='half_square'></span><span class='square' style='background-color:#0a9a94' title='RGB (10, 154, 148), Lab (57, -34, -6), color Gr, side None'>None</span>
+<span class='square' style='background-color:#00987d' title='RGB (0, 152, 125), Lab (56, -40, 4), color Gr, side None'>9</span>
+<span class='half_square'></span><span class='square' style='background-color:#9f5640' title='RGB (159, 86, 64), Lab (44, 27, 26), color Rd, side None'>None</span>
+<span class='square' style='background-color:#974817' title='RGB (151, 72, 23), Lab (40, 30, 42), color Rd, side None'>45</span>
+<br></div>
+<div class='clear colors'>
+<h2>centers</h2>
+<span class='square' style='background-color:#009e90' title='RGB (0, 158, 144), Lab (58, -37, -2), color Gr, side None'>5</span>
+<br><span class='square' style='background-color:#91c363' title='RGB (145, 195, 99), Lab (73, -32, 42), color Ye, side None'>14</span>
+<br><span class='square' style='background-color:#b2563c' title='RGB (178, 86, 60), Lab (47, 35, 32), color Rd, side None'>23</span>
+<br><span class='square' style='background-color:#85a5c7' title='RGB (133, 165, 199), Lab (66, -2, -20), color Wh, side None'>32</span>
+<br><span class='square' style='background-color:#faa178' title='RGB (250, 161, 120), Lab (74, 28, 34), color OR, side None'>41</span>
+<br><span class='square' style='background-color:#006bfa' title='RGB (0, 107, 250), Lab (48, 30, -77), color Bu, side None'>50</span>
+<br></div>
+<div class='clear colors'>
+<h2>edges - orbit 0</h2>
+<span class='square' style='background-color:#8eb866' title='RGB (142, 184, 102), Lab (70, -28, 37), color Ye, side None'>None</span>
+<span class='square' style='background-color:#92bb56' title='RGB (146, 187, 86), Lab (71, -30, 46), color Ye, side None'>15</span>
+<span class='half_square'></span><span class='square' style='background-color:#82a0bc' title='RGB (130, 160, 188), Lab (64, -3, -17), color Wh, side None'>None</span>
+<span class='square' style='background-color:#829fbc' title='RGB (130, 159, 188), Lab (64, -3, -18), color Wh, side None'>35</span>
+<span class='half_square'></span><span class='square' style='background-color:#006df5' title='RGB (0, 109, 245), Lab (48, 26, -74), color Bu, side None'>None</span>
+<span class='square' style='background-color:#0069ed' title='RGB (0, 105, 237), Lab (47, 26, -73), color Bu, side None'>47</span>
+<span class='half_square'></span><span class='square' style='background-color:#006df5' title='RGB (0, 109, 245), Lab (48, 26, -74), color Bu, side None'>None</span>
+<span class='square' style='background-color:#0061ce' title='RGB (0, 97, 206), Lab (42, 19, -62), color Bu, side None'>2</span>
+<span class='half_square'></span><span class='square' style='background-color:#82a0bc' title='RGB (130, 160, 188), Lab (64, -3, -17), color Wh, side None'>None</span>
+<span class='square' style='background-color:#859fb8' title='RGB (133, 159, 184), Lab (64, -3, -15), color Wh, side None'>33</span>
+<span class='half_square'></span><span class='square' style='background-color:#82a0bc' title='RGB (130, 160, 188), Lab (64, -3, -17), color Wh, side None'>None</span>
+<span class='square' style='background-color:#83a6c9' title='RGB (131, 166, 201), Lab (66, -3, -21), color Wh, side None'>31</span>
+<span class='half_square'></span><span class='square' style='background-color:#8eb866' title='RGB (142, 184, 102), Lab (70, -28, 37), color Ye, side None'>None</span>
+<span class='square' style='background-color:#8ec16f' title='RGB (142, 193, 111), Lab (72, -31, 35), color Ye, side None'>13</span>
+<span class='half_square'></span><span class='square' style='background-color:#8eb866' title='RGB (142, 184, 102), Lab (70, -28, 37), color Ye, side None'>None</span>
+<span class='square' style='background-color:#8eba54' title='RGB (142, 186, 84), Lab (70, -31, 46), color Ye, side None'>17</span>
+<span class='half_square'></span><span class='square' style='background-color:#8eb866' title='RGB (142, 184, 102), Lab (70, -28, 37), color Ye, side None'>None</span>
+<span class='square' style='background-color:#8fba6f' title='RGB (143, 186, 111), Lab (70, -27, 33), color Ye, side None'>11</span>
+<span class='half_square'></span><span class='square' style='background-color:#0a9a94' title='RGB (10, 154, 148), Lab (57, -34, -6), color Gr, side None'>None</span>
+<span class='square' style='background-color:#019e8d' title='RGB (1, 158, 141), Lab (58, -38, 0), color Gr, side None'>8</span>
+<span class='half_square'></span><span class='square' style='background-color:#0a9a94' title='RGB (10, 154, 148), Lab (57, -34, -6), color Gr, side None'>None</span>
+<span class='square' style='background-color:#00ae99' title='RGB (0, 174, 153), Lab (63, -42, 0), color Gr, side None'>53</span>
+<span class='half_square'></span><span class='square' style='background-color:#82a0bc' title='RGB (130, 160, 188), Lab (64, -3, -17), color Wh, side None'>None</span>
+<span class='square' style='background-color:#83a2c1' title='RGB (131, 162, 193), Lab (65, -3, -19), color Wh, side None'>29</span>
+<br><span class='square' style='background-color:#006df5' title='RGB (0, 109, 245), Lab (48, 26, -74), color Bu, side None'>None</span>
+<span class='square' style='background-color:#0076ff' title='RGB (0, 118, 255), Lab (52, 25, -75), color Bu, side None'>22</span>
+<span class='half_square'></span><span class='square' style='background-color:#006df5' title='RGB (0, 109, 245), Lab (48, 26, -74), color Bu, side None'>None</span>
+<span class='square' style='background-color:#0060ee' title='RGB (0, 96, 238), Lab (44, 32, -77), color Bu, side None'>51</span>
+<span class='half_square'></span><span class='square' style='background-color:#9f5640' title='RGB (159, 86, 64), Lab (44, 27, 26), color Rd, side None'>None</span>
+<span class='square' style='background-color:#ad614d' title='RGB (173, 97, 77), Lab (49, 28, 24), color Rd, side None'>26</span>
+<span class='half_square'></span><span class='square' style='background-color:#f59e7a' title='RGB (245, 158, 122), Lab (73, 28, 32), color OR, side None'>None</span>
+<span class='square' style='background-color:#f59e7a' title='RGB (245, 158, 122), Lab (73, 28, 32), color OR, side None'>38</span>
+<span class='half_square'></span><span class='square' style='background-color:#f59e7a' title='RGB (245, 158, 122), Lab (73, 28, 32), color OR, side None'>None</span>
+<span class='square' style='background-color:#f9a37e' title='RGB (249, 163, 126), Lab (74, 27, 32), color OR, side None'>40</span>
+<span class='half_square'></span><span class='square' style='background-color:#9f5640' title='RGB (159, 86, 64), Lab (44, 27, 26), color Rd, side None'>None</span>
+<span class='square' style='background-color:#ac512e' title='RGB (172, 81, 46), Lab (45, 34, 37), color Rd, side None'>24</span>
+<span class='half_square'></span><span class='square' style='background-color:#f59e7a' title='RGB (245, 158, 122), Lab (73, 28, 32), color OR, side None'>None</span>
+<span class='square' style='background-color:#fb9d6f' title='RGB (251, 157, 111), Lab (73, 30, 38), color OR, side None'>42</span>
+<span class='half_square'></span><span class='square' style='background-color:#9f5640' title='RGB (159, 86, 64), Lab (44, 27, 26), color Rd, side None'>None</span>
+<span class='square' style='background-color:#9a615b' title='RGB (154, 97, 91), Lab (47, 22, 13), color Rd, side None'>49</span>
+<span class='half_square'></span><span class='square' style='background-color:#0a9a94' title='RGB (10, 154, 148), Lab (57, -34, -6), color Gr, side None'>None</span>
+<span class='square' style='background-color:#0a9a95' title='RGB (10, 154, 149), Lab (57, -34, -6), color Gr, side None'>4</span>
+<span class='half_square'></span><span class='square' style='background-color:#f59e7a' title='RGB (245, 158, 122), Lab (73, 28, 32), color OR, side None'>None</span>
+<span class='square' style='background-color:#f6b998' title='RGB (246, 185, 152), Lab (79, 17, 25), color OR, side None'>20</span>
+<span class='half_square'></span><span class='square' style='background-color:#9f5640' title='RGB (159, 86, 64), Lab (44, 27, 26), color Rd, side None'>None</span>
+<span class='square' style='background-color:#9a4718' title='RGB (154, 71, 24), Lab (40, 31, 42), color Rd, side None'>44</span>
+<span class='half_square'></span><span class='square' style='background-color:#0a9a94' title='RGB (10, 154, 148), Lab (57, -34, -6), color Gr, side None'>None</span>
+<span class='square' style='background-color:#009f8a' title='RGB (0, 159, 138), Lab (58, -40, 1), color Gr, side None'>6</span>
+<br></div>
+<div id='bottom'><div class='cube initial_rgb_values'><h1>Initial RGB values</h1>
+<div class='side' id='upper'>
+    <div class='square col1' title='RGB (18, 150, 149), Lab (56, -31, -8), color None' style='background-color: #129695;'><span>01</span></div>
+    <div class='square col2' title='RGB (0, 97, 206), Lab (42, 19, -62), color None' style='background-color: #0061ce;'><span>02</span></div>
+    <div class='square col3' title='RGB (21, 156, 147), Lab (58, -35, -4), color None' style='background-color: #159c93;'><span>03</span></div>
+    <div class='square col1' title='RGB (10, 154, 149), Lab (57, -34, -6), color None' style='background-color: #0a9a95;'><span>04</span></div>
+    <div class='square col2' title='RGB (0, 158, 144), Lab (58, -37, -2), color None' style='background-color: #009e90;'><span>05</span></div>
+    <div class='square col3' title='RGB (0, 159, 138), Lab (58, -40, 1), color None' style='background-color: #009f8a;'><span>06</span></div>
+    <div class='square col1' title='RGB (144, 86, 77), Lab (42, 22, 15), color None' style='background-color: #90564d;'><span>07</span></div>
+    <div class='square col2' title='RGB (1, 158, 141), Lab (58, -38, 0), color None' style='background-color: #019e8d;'><span>08</span></div>
+    <div class='square col3' title='RGB (0, 152, 125), Lab (56, -40, 4), color None' style='background-color: #00987d;'><span>09</span></div>
+</div>
+<div class='clear'></div>
+<div class='side' id='left'>
+    <div class='square col1' title='RGB (140, 185, 122), Lab (70, -26, 27), color None' style='background-color: #8cb97a;'><span>10</span></div>
+    <div class='square col2' title='RGB (143, 186, 111), Lab (70, -27, 33), color None' style='background-color: #8fba6f;'><span>11</span></div>
+    <div class='square col3' title='RGB (144, 184, 103), Lab (70, -27, 36), color None' style='background-color: #90b867;'><span>12</span></div>
+    <div class='square col1' title='RGB (142, 193, 111), Lab (72, -31, 35), color None' style='background-color: #8ec16f;'><span>13</span></div>
+    <div class='square col2' title='RGB (145, 195, 99), Lab (73, -32, 42), color None' style='background-color: #91c363;'><span>14</span></div>
+    <div class='square col3' title='RGB (146, 187, 86), Lab (71, -30, 46), color None' style='background-color: #92bb56;'><span>15</span></div>
+    <div class='square col1' title='RGB (141, 188, 102), Lab (71, -30, 38), color None' style='background-color: #8dbc66;'><span>16</span></div>
+    <div class='square col2' title='RGB (142, 186, 84), Lab (70, -31, 46), color None' style='background-color: #8eba54;'><span>17</span></div>
+    <div class='square col3' title='RGB (145, 182, 79), Lab (69, -28, 47), color None' style='background-color: #91b64f;'><span>18</span></div>
+</div>
+<div class='side' id='front'>
+    <div class='square col1' title='RGB (0, 119, 254), Lab (52, 24, -74), color None' style='background-color: #0077fe;'><span>19</span></div>
+    <div class='square col2' title='RGB (246, 185, 152), Lab (79, 17, 25), color None' style='background-color: #f6b998;'><span>20</span></div>
+    <div class='square col3' title='RGB (173, 100, 74), Lab (50, 26, 27), color None' style='background-color: #ad644a;'><span>21</span></div>
+    <div class='square col1' title='RGB (0, 118, 255), Lab (52, 25, -75), color None' style='background-color: #0076ff;'><span>22</span></div>
+    <div class='square col2' title='RGB (178, 86, 60), Lab (47, 35, 32), color None' style='background-color: #b2563c;'><span>23</span></div>
+    <div class='square col3' title='RGB (172, 81, 46), Lab (45, 34, 37), color None' style='background-color: #ac512e;'><span>24</span></div>
+    <div class='square col1' title='RGB (0, 115, 254), Lab (51, 26, -76), color None' style='background-color: #0073fe;'><span>25</span></div>
+    <div class='square col2' title='RGB (173, 97, 77), Lab (49, 28, 24), color None' style='background-color: #ad614d;'><span>26</span></div>
+    <div class='square col3' title='RGB (167, 86, 54), Lab (45, 30, 33), color None' style='background-color: #a75636;'><span>27</span></div>
+</div>
+<div class='side' id='right'>
+    <div class='square col1' title='RGB (128, 162, 200), Lab (65, -2, -23), color None' style='background-color: #80a2c8;'><span>28</span></div>
+    <div class='square col2' title='RGB (131, 162, 193), Lab (65, -3, -19), color None' style='background-color: #83a2c1;'><span>29</span></div>
+    <div class='square col3' title='RGB (133, 159, 183), Lab (64, -3, -15), color None' style='background-color: #859fb7;'><span>30</span></div>
+    <div class='square col1' title='RGB (131, 166, 201), Lab (66, -3, -21), color None' style='background-color: #83a6c9;'><span>31</span></div>
+    <div class='square col2' title='RGB (133, 165, 199), Lab (66, -2, -20), color None' style='background-color: #85a5c7;'><span>32</span></div>
+    <div class='square col3' title='RGB (133, 159, 184), Lab (64, -3, -15), color None' style='background-color: #859fb8;'><span>33</span></div>
+    <div class='square col1' title='RGB (129, 161, 193), Lab (64, -3, -20), color None' style='background-color: #81a1c1;'><span>34</span></div>
+    <div class='square col2' title='RGB (130, 159, 188), Lab (64, -3, -18), color None' style='background-color: #829fbc;'><span>35</span></div>
+    <div class='square col3' title='RGB (132, 155, 178), Lab (62, -2, -14), color None' style='background-color: #849bb2;'><span>36</span></div>
+</div>
+<div class='side' id='back'>
+    <div class='square col1' title='RGB (242, 159, 126), Lab (73, 27, 29), color None' style='background-color: #f29f7e;'><span>37</span></div>
+    <div class='square col2' title='RGB (245, 158, 122), Lab (73, 28, 32), color None' style='background-color: #f59e7a;'><span>38</span></div>
+    <div class='square col3' title='RGB (245, 158, 118), Lab (73, 28, 34), color None' style='background-color: #f59e76;'><span>39</span></div>
+    <div class='square col1' title='RGB (249, 163, 126), Lab (74, 27, 32), color None' style='background-color: #f9a37e;'><span>40</span></div>
+    <div class='square col2' title='RGB (250, 161, 120), Lab (74, 28, 34), color None' style='background-color: #faa178;'><span>41</span></div>
+    <div class='square col3' title='RGB (251, 157, 111), Lab (73, 30, 38), color None' style='background-color: #fb9d6f;'><span>42</span></div>
+    <div class='square col1' title='RGB (250, 158, 116), Lab (73, 30, 36), color None' style='background-color: #fa9e74;'><span>43</span></div>
+    <div class='square col2' title='RGB (154, 71, 24), Lab (40, 31, 42), color None' style='background-color: #9a4718;'><span>44</span></div>
+    <div class='square col3' title='RGB (151, 72, 23), Lab (40, 30, 42), color None' style='background-color: #974817;'><span>45</span></div>
+</div>
+<div class='clear'></div>
+<div class='side' id='down'>
+    <div class='square col1' title='RGB (245, 165, 148), Lab (75, 27, 20), color None' style='background-color: #f5a594;'><span>46</span></div>
+    <div class='square col2' title='RGB (0, 105, 237), Lab (47, 26, -73), color None' style='background-color: #0069ed;'><span>47</span></div>
+    <div class='square col3' title='RGB (0, 103, 230), Lab (46, 24, -70), color None' style='background-color: #0067e6;'><span>48</span></div>
+    <div class='square col1' title='RGB (154, 97, 91), Lab (47, 22, 13), color None' style='background-color: #9a615b;'><span>49</span></div>
+    <div class='square col2' title='RGB (0, 107, 250), Lab (48, 30, -77), color None' style='background-color: #006bfa;'><span>50</span></div>
+    <div class='square col3' title='RGB (0, 96, 238), Lab (44, 32, -77), color None' style='background-color: #0060ee;'><span>51</span></div>
+    <div class='square col1' title='RGB (3, 169, 161), Lab (62, -37, -6), color None' style='background-color: #03a9a1;'><span>52</span></div>
+    <div class='square col2' title='RGB (0, 174, 153), Lab (63, -42, 0), color None' style='background-color: #00ae99;'><span>53</span></div>
+    <div class='square col3' title='RGB (0, 100, 236), Lab (45, 29, -74), color None' style='background-color: #0064ec;'><span>54</span></div>
+</div>
+<div class='clear'></div>
+</div><div class='cube final_cube'><h1>Final Cube</h1>
+<div class='side' id='upper'>
+    <div class='square col1' title='RGB (0, 102, 0), Lab (56, -31, -8), color Gr' style='background-color: #006600;'><span>01</span></div>
+    <div class='square col2' title='RGB (0, 0, 153), Lab (42, 19, -62), color Bu' style='background-color: #000099;'><span>02</span></div>
+    <div class='square col3' title='RGB (0, 102, 0), Lab (58, -35, -4), color Gr' style='background-color: #006600;'><span>03</span></div>
+    <div class='square col1' title='RGB (0, 102, 0), Lab (57, -34, -6), color Gr' style='background-color: #006600;'><span>04</span></div>
+    <div class='square col2' title='RGB (0, 102, 0), Lab (58, -37, -2), color Gr' style='background-color: #006600;'><span>05</span></div>
+    <div class='square col3' title='RGB (0, 102, 0), Lab (58, -40, 1), color Gr' style='background-color: #006600;'><span>06</span></div>
+    <div class='square col1' title='RGB (204, 51, 0), Lab (42, 22, 15), color Rd' style='background-color: #cc3300;'><span>07</span></div>
+    <div class='square col2' title='RGB (0, 102, 0), Lab (58, -38, 0), color Gr' style='background-color: #006600;'><span>08</span></div>
+    <div class='square col3' title='RGB (0, 102, 0), Lab (56, -40, 4), color Gr' style='background-color: #006600;'><span>09</span></div>
+</div>
+<div class='clear'></div>
+<div class='side' id='left'>
+    <div class='square col1' title='RGB (255, 255, 0), Lab (70, -26, 27), color Ye' style='background-color: #ffff00;'><span>10</span></div>
+    <div class='square col2' title='RGB (255, 255, 0), Lab (70, -27, 33), color Ye' style='background-color: #ffff00;'><span>11</span></div>
+    <div class='square col3' title='RGB (255, 255, 0), Lab (70, -27, 36), color Ye' style='background-color: #ffff00;'><span>12</span></div>
+    <div class='square col1' title='RGB (255, 255, 0), Lab (72, -31, 35), color Ye' style='background-color: #ffff00;'><span>13</span></div>
+    <div class='square col2' title='RGB (255, 255, 0), Lab (73, -32, 42), color Ye' style='background-color: #ffff00;'><span>14</span></div>
+    <div class='square col3' title='RGB (255, 255, 0), Lab (71, -30, 46), color Ye' style='background-color: #ffff00;'><span>15</span></div>
+    <div class='square col1' title='RGB (255, 255, 0), Lab (71, -30, 38), color Ye' style='background-color: #ffff00;'><span>16</span></div>
+    <div class='square col2' title='RGB (255, 255, 0), Lab (70, -31, 46), color Ye' style='background-color: #ffff00;'><span>17</span></div>
+    <div class='square col3' title='RGB (255, 255, 0), Lab (69, -28, 47), color Ye' style='background-color: #ffff00;'><span>18</span></div>
+</div>
+<div class='side' id='front'>
+    <div class='square col1' title='RGB (0, 0, 153), Lab (52, 24, -74), color Bu' style='background-color: #000099;'><span>19</span></div>
+    <div class='square col2' title='RGB (255, 153, 0), Lab (79, 17, 25), color OR' style='background-color: #ff9900;'><span>20</span></div>
+    <div class='square col3' title='RGB (204, 51, 0), Lab (50, 26, 27), color Rd' style='background-color: #cc3300;'><span>21</span></div>
+    <div class='square col1' title='RGB (0, 0, 153), Lab (52, 25, -75), color Bu' style='background-color: #000099;'><span>22</span></div>
+    <div class='square col2' title='RGB (204, 51, 0), Lab (47, 35, 32), color Rd' style='background-color: #cc3300;'><span>23</span></div>
+    <div class='square col3' title='RGB (204, 51, 0), Lab (45, 34, 37), color Rd' style='background-color: #cc3300;'><span>24</span></div>
+    <div class='square col1' title='RGB (0, 0, 153), Lab (51, 26, -76), color Bu' style='background-color: #000099;'><span>25</span></div>
+    <div class='square col2' title='RGB (204, 51, 0), Lab (49, 28, 24), color Rd' style='background-color: #cc3300;'><span>26</span></div>
+    <div class='square col3' title='RGB (204, 51, 0), Lab (45, 30, 33), color Rd' style='background-color: #cc3300;'><span>27</span></div>
+</div>
+<div class='side' id='right'>
+    <div class='square col1' title='RGB (255, 255, 255), Lab (65, -2, -23), color Wh' style='background-color: #ffffff;'><span>28</span></div>
+    <div class='square col2' title='RGB (255, 255, 255), Lab (65, -3, -19), color Wh' style='background-color: #ffffff;'><span>29</span></div>
+    <div class='square col3' title='RGB (255, 255, 255), Lab (64, -3, -15), color Wh' style='background-color: #ffffff;'><span>30</span></div>
+    <div class='square col1' title='RGB (255, 255, 255), Lab (66, -3, -21), color Wh' style='background-color: #ffffff;'><span>31</span></div>
+    <div class='square col2' title='RGB (255, 255, 255), Lab (66, -2, -20), color Wh' style='background-color: #ffffff;'><span>32</span></div>
+    <div class='square col3' title='RGB (255, 255, 255), Lab (64, -3, -15), color Wh' style='background-color: #ffffff;'><span>33</span></div>
+    <div class='square col1' title='RGB (255, 255, 255), Lab (64, -3, -20), color Wh' style='background-color: #ffffff;'><span>34</span></div>
+    <div class='square col2' title='RGB (255, 255, 255), Lab (64, -3, -18), color Wh' style='background-color: #ffffff;'><span>35</span></div>
+    <div class='square col3' title='RGB (255, 255, 255), Lab (62, -2, -14), color Wh' style='background-color: #ffffff;'><span>36</span></div>
+</div>
+<div class='side' id='back'>
+    <div class='square col1' title='RGB (255, 153, 0), Lab (73, 27, 29), color OR' style='background-color: #ff9900;'><span>37</span></div>
+    <div class='square col2' title='RGB (255, 153, 0), Lab (73, 28, 32), color OR' style='background-color: #ff9900;'><span>38</span></div>
+    <div class='square col3' title='RGB (255, 153, 0), Lab (73, 28, 34), color OR' style='background-color: #ff9900;'><span>39</span></div>
+    <div class='square col1' title='RGB (255, 153, 0), Lab (74, 27, 32), color OR' style='background-color: #ff9900;'><span>40</span></div>
+    <div class='square col2' title='RGB (255, 153, 0), Lab (74, 28, 34), color OR' style='background-color: #ff9900;'><span>41</span></div>
+    <div class='square col3' title='RGB (255, 153, 0), Lab (73, 30, 38), color OR' style='background-color: #ff9900;'><span>42</span></div>
+    <div class='square col1' title='RGB (255, 153, 0), Lab (73, 30, 36), color OR' style='background-color: #ff9900;'><span>43</span></div>
+    <div class='square col2' title='RGB (204, 51, 0), Lab (40, 31, 42), color Rd' style='background-color: #cc3300;'><span>44</span></div>
+    <div class='square col3' title='RGB (204, 51, 0), Lab (40, 30, 42), color Rd' style='background-color: #cc3300;'><span>45</span></div>
+</div>
+<div class='clear'></div>
+<div class='side' id='down'>
+    <div class='square col1' title='RGB (255, 153, 0), Lab (75, 27, 20), color OR' style='background-color: #ff9900;'><span>46</span></div>
+    <div class='square col2' title='RGB (0, 0, 153), Lab (47, 26, -73), color Bu' style='background-color: #000099;'><span>47</span></div>
+    <div class='square col3' title='RGB (0, 0, 153), Lab (46, 24, -70), color Bu' style='background-color: #000099;'><span>48</span></div>
+    <div class='square col1' title='RGB (204, 51, 0), Lab (47, 22, 13), color Rd' style='background-color: #cc3300;'><span>49</span></div>
+    <div class='square col2' title='RGB (0, 0, 153), Lab (48, 30, -77), color Bu' style='background-color: #000099;'><span>50</span></div>
+    <div class='square col3' title='RGB (0, 0, 153), Lab (44, 32, -77), color Bu' style='background-color: #000099;'><span>51</span></div>
+    <div class='square col1' title='RGB (0, 102, 0), Lab (62, -37, -6), color Gr' style='background-color: #006600;'><span>52</span></div>
+    <div class='square col2' title='RGB (0, 102, 0), Lab (63, -42, 0), color Gr' style='background-color: #006600;'><span>53</span></div>
+    <div class='square col3' title='RGB (0, 0, 153), Lab (45, 29, -74), color Bu' style='background-color: #000099;'><span>54</span></div>
+</div>
+<div class='clear'></div>
+</div></div>
+</body>
+</html>

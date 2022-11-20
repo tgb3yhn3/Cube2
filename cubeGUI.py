@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 import tkinter.font as tkFont
 import Cube3x3 as Cube
 import squ
@@ -385,6 +386,17 @@ def imageRecognition():
     
 def loadRecognitionDataFromJson():
     #TODO
+    arg=["",'--filename', 'webcam.json']
+    ans=color(arg)
+    ir=squ.imageRecognitioner()
+    for i in range(6):
+        for row in range(3):
+            for col in range(3):
+                # cubeColorData[i][col][row]=ir.getColor('img/'+str(i+1)+'.jpg')[row][col]
+                cubeColorData[i][col][row]=ans[col*3+row+i*9]
+    print(cubeColorData)
+    cubeColorDataToString()
+    updateGUIcube()
 
 def updateGUIcube():
     #功能:更新視窗裡的魔術方塊

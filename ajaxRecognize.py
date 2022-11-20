@@ -95,6 +95,7 @@ def start_web():
     rubik=RubiksImage()
     # rubik.debug=True
     app.run('172.20.10.3')
+    #app.run('192.168.1.120')
 if __name__=='__main__':
     #app.debug=False
     #rubik=RubiksImage()
