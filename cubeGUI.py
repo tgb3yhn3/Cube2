@@ -91,7 +91,6 @@ def clickFaceButton(event,FaceButtons,face,row,col):
         FaceButtons[face][row][col].changeBackgroundColor(bg = "blue")
         cubeColorData[face][row][col] = 'b'
 
-
 def mouseEnterFaceButton(event,FaceButtons,face,row,col):
     #功能:滑鼠移動到魔術方塊格子按鈕上會有特效，不會更改此格的顏色資料(cubeColorData[face][row][col])
     #參數:FaceButtons：所有魔術方塊格子按鈕  face:在魔術方塊的哪一面  num:是同一面中的第幾格    
@@ -146,48 +145,48 @@ def clickManuallySetColorButton(event,manuallyChooseColorBlock,i):
         manuallySelectedColors = 'w' 
         manuallyChooseColorBlock.configure(bg = "white")
     elif i == 1:
-        manuallySelectedColors = 'b' 
-        manuallyChooseColorBlock.configure(bg = "blue")
-    elif i == 2:
         manuallySelectedColors = 'o'
         manuallyChooseColorBlock.configure(bg = "orange")
+    elif i == 2:
+        manuallySelectedColors = 'g' 
+        manuallyChooseColorBlock.configure(bg = "limegreen")
     elif i == 3:
         manuallySelectedColors = 'y' 
         manuallyChooseColorBlock.configure(bg = "yellow")
     elif i == 4:
-        manuallySelectedColors = 'g' 
-        manuallyChooseColorBlock.configure(bg = "limegreen")
-    elif i == 5:
         manuallySelectedColors = 'r' 
         manuallyChooseColorBlock.configure(bg = "red")
+    elif i == 5:
+        manuallySelectedColors = 'b' 
+        manuallyChooseColorBlock.configure(bg = "blue")
         
 def mouseEnterManuallySetColorButton(event,manuallySetColorButtons,i):
     if i == 0:
         manuallySetColorButtons[i].configure(bg = "silver")
     elif i == 1:
-        manuallySetColorButtons[i].configure(bg = "Darkblue")
-    elif i == 2:
         manuallySetColorButtons[i].configure(bg = "Chocolate")
+    elif i == 2:
+        manuallySetColorButtons[i].configure(bg = "darkgreen")
     elif i == 3:
         manuallySetColorButtons[i].configure(bg = "goldenrod")
     elif i == 4:
-        manuallySetColorButtons[i].configure(bg = "darkgreen")
-    elif i == 5: 
         manuallySetColorButtons[i].configure(bg = "DarkRed")
+    elif i == 5: 
+        manuallySetColorButtons[i].configure(bg = "Darkblue")
 
 def mouseLeaveManuallySetColorButton(event,manuallySetColorButtons,i):
     if i == 0:
         manuallySetColorButtons[i].configure(bg = "white")
     elif i == 1:
-        manuallySetColorButtons[i].configure(bg = "blue")
-    elif i == 2:
         manuallySetColorButtons[i].configure(bg = "orange")
+    elif i == 2:
+        manuallySetColorButtons[i].configure(bg = "limegreen")
     elif i == 3:
         manuallySetColorButtons[i].configure(bg = "yellow")
     elif i == 4:
-        manuallySetColorButtons[i].configure(bg = "limegreen")
+      manuallySetColorButtons[i].configure(bg = "red")
     elif i == 5: 
-        manuallySetColorButtons[i].configure(bg = "red")
+        manuallySetColorButtons[i].configure(bg = "blue")
         
 def mouseEnterFunctionButton(event,functionButton,color="blue"):
     functionButton.configure(fg = color)
@@ -507,7 +506,7 @@ manuallySetColorButtonsBlock.rowconfigure((0,1), weight = 1)
 manuallySetColorButtonsBlock.columnconfigure((0,1,2), weight = 1)
 manuallySetColorButtonsBlock.grid_propagate(0)
 manuallySetColorButtons = [0 for i in range(6)]    
-manuallySetColorButtonBackgroundColor = ['white','blue','orange','yellow','limegreen','red'] 
+manuallySetColorButtonBackgroundColor = ['white','orange','limegreen','yellow','red','blue'] 
 for i in range(6):
     #為了改用像素單位調整Button長寬，所以才把Button塞在Frame裡面，Frame的長寬即Button長寬
     manuallySetColorButtons[i] = tk.Frame(manuallySetColorButtonsBlock,cursor="hand2",width=standardPixelSize,height=standardPixelSize,bg=manuallySetColorButtonBackgroundColor[i])
